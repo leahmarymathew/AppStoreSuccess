@@ -1,0 +1,12 @@
+
+	Pearson's product-moment correlation
+
+data:  df$Rating and df$log_installs
+t = 5.0153, df = 7024, p-value = 5.426e-07
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.03640192 0.08300193
+sample estimates:
+       cor 
+0.05973447 
+

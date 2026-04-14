@@ -1,0 +1,1379 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\SpecialCharTok{{-}{-}{-}}
+\NormalTok{title}\SpecialCharTok{:} \StringTok{"App Store Success"}
+\NormalTok{date}\SpecialCharTok{:} \StringTok{"2026{-}04{-}10"}
+\NormalTok{output}\SpecialCharTok{:}\NormalTok{ pdf\_document}
+\SpecialCharTok{{-}{-}{-}}
+
+
+\StringTok{\textasciigrave{}\textasciigrave{}\textasciigrave{}}\AttributeTok{ r}
+\AttributeTok{suppressPackageStartupMessages(\{}
+\AttributeTok{    library(dplyr)}
+\AttributeTok{    library(readr)}
+\AttributeTok{    library(stringr)}
+\AttributeTok{    library(ggplot2)}
+\AttributeTok{\})}
+\AttributeTok{set.seed(42)}
+\AttributeTok{options(width = 120)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Paths}\label{paths}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{raw\_apps\_path }\OtherTok{\textless{}{-}} \StringTok{"data/raw/googleplaystore.csv"}
+\NormalTok{raw\_reviews\_path }\OtherTok{\textless{}{-}} \StringTok{"data/raw/googleplaystore\_user\_reviews.csv"}
+
+\NormalTok{clean\_apps\_path }\OtherTok{\textless{}{-}} \StringTok{"data/cleaned/apps\_cleaned.csv"}
+\NormalTok{review\_summary\_path }\OtherTok{\textless{}{-}} \StringTok{"data/cleaned/review\_summary.csv"}
+\NormalTok{final\_data\_path }\OtherTok{\textless{}{-}} \StringTok{"data/cleaned/final\_data.csv"}
+\NormalTok{final\_filtered\_path }\OtherTok{\textless{}{-}} \StringTok{"data/cleaned/final\_data\_filtered.csv"}
+\NormalTok{processed\_path }\OtherTok{\textless{}{-}} \StringTok{"processed\_appstore.csv"}
+
+\NormalTok{output\_dir }\OtherTok{\textless{}{-}} \StringTok{"outputs"}
+\NormalTok{plot\_dir }\OtherTok{\textless{}{-}} \FunctionTok{file.path}\NormalTok{(output\_dir, }\StringTok{"plots"}\NormalTok{)}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{dir.exists}\NormalTok{(output\_dir)) }\FunctionTok{dir.create}\NormalTok{(output\_dir, }\AttributeTok{recursive =} \ConstantTok{TRUE}\NormalTok{)}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{dir.exists}\NormalTok{(plot\_dir)) }\FunctionTok{dir.create}\NormalTok{(plot\_dir, }\AttributeTok{recursive =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Load Raw Data}\label{load-raw-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{apps }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(raw\_apps\_path, }\AttributeTok{show\_col\_types =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: One or more parsing issues, call `problems()` on your data frame for details, e.g.:
+##   dat <- vroom(...)
+##   problems(dat)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reviews }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(raw\_reviews\_path, }\AttributeTok{show\_col\_types =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(apps)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 13
+##   App            Category Rating Reviews Size  Installs Type  Price `Content Rating` Genres `Last Updated` `Current Ver`
+##   <chr>          <chr>     <dbl>   <dbl> <chr> <chr>    <chr> <chr> <chr>            <chr>  <chr>          <chr>        
+## 1 Photo Editor ~ ART_AND~    4.1     159 19M   10,000+  Free  0     Everyone         Art &~ January 7, 20~ 1.0.0        
+## 2 Coloring book~ ART_AND~    3.9     967 14M   500,000+ Free  0     Everyone         Art &~ January 15, 2~ 2.0.0        
+## 3 U Launcher Li~ ART_AND~    4.7   87510 8.7M  5,000,0~ Free  0     Everyone         Art &~ August 1, 2018 1.2.4        
+## 4 Sketch - Draw~ ART_AND~    4.5  215644 25M   50,000,~ Free  0     Teen             Art &~ June 8, 2018   Varies with ~
+## 5 Pixel Draw - ~ ART_AND~    4.3     967 2.8M  100,000+ Free  0     Everyone         Art &~ June 20, 2018  1.1          
+## 6 Paper flowers~ ART_AND~    4.4     167 5.6M  50,000+  Free  0     Everyone         Art &~ March 26, 2017 1.0          
+## # i 1 more variable: `Android Ver` <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(reviews)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 5
+##   App                   Translated_Review                            Sentiment Sentiment_Polarity Sentiment_Subjectivity
+##   <chr>                 <chr>                                        <chr>                  <dbl>                  <dbl>
+## 1 10 Best Foods for You "I like eat delicious food. That's I'm cook~ Positive                1                     0.533
+## 2 10 Best Foods for You "This help eating healthy exercise regular ~ Positive                0.25                  0.288
+## 3 10 Best Foods for You "nan"                                        nan                   NaN                   NaN    
+## 4 10 Best Foods for You "Works great especially going grocery store" Positive                0.4                   0.875
+## 5 10 Best Foods for You "Best idea us"                               Positive                1                     0.3  
+## 6 10 Best Foods for You "Best way"                                   Positive                1                     0.3
+\end{verbatim}
+
+\subsubsection{Clean Apps Data}\label{clean-apps-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{apps\_clean }\OtherTok{\textless{}{-}}\NormalTok{ apps }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Category), }\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Rating)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{distinct}\NormalTok{(App, }\AttributeTok{.keep\_all =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}
+        \AttributeTok{Reviews =} \FunctionTok{as.numeric}\NormalTok{(Reviews),}
+        \AttributeTok{Installs =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{str\_replace\_all}\NormalTok{(}\FunctionTok{str\_replace\_all}\NormalTok{(Installs, }\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{+"}\NormalTok{, }\StringTok{""}\NormalTok{), }\StringTok{","}\NormalTok{, }\StringTok{""}\NormalTok{)),}
+        \AttributeTok{Price =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{str\_replace}\NormalTok{(Price, }\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{$"}\NormalTok{, }\StringTok{""}\NormalTok{)),}
+        \AttributeTok{Size =} \FunctionTok{ifelse}\NormalTok{(Size }\SpecialCharTok{==} \StringTok{"Varies with device"}\NormalTok{, }\ConstantTok{NA}\NormalTok{, Size),}
+        \AttributeTok{Size =} \FunctionTok{str\_replace}\NormalTok{(Size, }\StringTok{"k"}\NormalTok{, }\StringTok{""}\NormalTok{),}
+        \AttributeTok{Size =} \FunctionTok{str\_replace}\NormalTok{(Size, }\StringTok{"M"}\NormalTok{, }\StringTok{""}\NormalTok{),}
+        \AttributeTok{Size =} \FunctionTok{as.numeric}\NormalTok{(Size)}
+\NormalTok{    )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: There were 3 warnings in `mutate()`.
+## The first warning was:
+## i In argument: `Installs = as.numeric(...)`.
+## Caused by warning:
+## ! NAs introduced by coercion
+## i Run `dplyr::last_dplyr_warnings()` to see the 2 remaining warnings.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{apps\_clean }\OtherTok{\textless{}{-}}\NormalTok{ apps\_clean }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}
+        \AttributeTok{Category =} \FunctionTok{as.factor}\NormalTok{(Category),}
+        \AttributeTok{Type =} \FunctionTok{as.factor}\NormalTok{(Type),}
+        \StringTok{\textasciigrave{}}\AttributeTok{Content Rating}\StringTok{\textasciigrave{}} \OtherTok{=} \FunctionTok{as.factor}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Content Rating}\StringTok{\textasciigrave{}}\NormalTok{),}
+        \AttributeTok{Genres =} \FunctionTok{as.factor}\NormalTok{(Genres)}
+\NormalTok{    )}
+
+\FunctionTok{write\_csv}\NormalTok{(apps\_clean, clean\_apps\_path)}
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(apps\_clean), }\AttributeTok{caption =} \StringTok{"Cleaned Apps Data"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.2602}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0765}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0357}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0408}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0255}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0459}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0255}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0306}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0765}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.1327}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0867}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0969}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 24\tabcolsep) * \real{0.0663}}@{}}
+\caption{Cleaned Apps Data}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+App
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Category
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Rating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Reviews
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Size
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Installs
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Price
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Content Rating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Genres
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Last Updated
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Current Ver
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Android Ver
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+App
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Category
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Rating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Reviews
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Size
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Installs
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Price
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Content Rating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Genres
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Last Updated
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Current Ver
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Android Ver
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Photo Editor \& Candy Camera \& Grid \& ScrapBook & ART\_AND\_DESIGN &
+4.1 & 159 & 19.0 & 1e+04 & Free & 0 & Everyone & Art \& Design & January
+7, 2018 & 1.0.0 & 4.0.3 and up \\
+Coloring book moana & ART\_AND\_DESIGN & 3.9 & 967 & 14.0 & 5e+05 & Free
+& 0 & Everyone & Art \& Design;Pretend Play & January 15, 2018 & 2.0.0 &
+4.0.3 and up \\
+U Launcher Lite -- FREE Live Cool Themes, Hide Apps & ART\_AND\_DESIGN &
+4.7 & 87510 & 8.7 & 5e+06 & Free & 0 & Everyone & Art \& Design & August
+1, 2018 & 1.2.4 & 4.0.3 and up \\
+Sketch - Draw \& Paint & ART\_AND\_DESIGN & 4.5 & 215644 & 25.0 & 5e+07
+& Free & 0 & Teen & Art \& Design & June 8, 2018 & Varies with device &
+4.2 and up \\
+Pixel Draw - Number Art Coloring Book & ART\_AND\_DESIGN & 4.3 & 967 &
+2.8 & 1e+05 & Free & 0 & Everyone & Art \& Design;Creativity & June 20,
+2018 & 1.1 & 4.4 and up \\
+Paper flowers instructions & ART\_AND\_DESIGN & 4.4 & 167 & 5.6 & 5e+04
+& Free & 0 & Everyone & Art \& Design & March 26, 2017 & 1.0 & 2.3 and
+up \\
+\end{longtable}
+
+\subsubsection{Clean Reviews and
+Summarize}\label{clean-reviews-and-summarize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reviews\_clean }\OtherTok{\textless{}{-}}\NormalTok{ reviews }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Translated\_Review)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{select}\NormalTok{(App, Sentiment\_Polarity)}
+
+\NormalTok{reviews\_clean}\SpecialCharTok{$}\NormalTok{Sentiment\_Polarity[}\FunctionTok{is.na}\NormalTok{(reviews\_clean}\SpecialCharTok{$}\NormalTok{Sentiment\_Polarity)] }\OtherTok{\textless{}{-}} \DecValTok{0}
+
+\NormalTok{review\_summary }\OtherTok{\textless{}{-}}\NormalTok{ reviews\_clean }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(App) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}
+        \AttributeTok{Avg\_Sentiment =} \FunctionTok{mean}\NormalTok{(Sentiment\_Polarity, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+        \AttributeTok{Review\_Count =} \FunctionTok{n}\NormalTok{(),}
+        \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{    )}
+
+\FunctionTok{write\_csv}\NormalTok{(review\_summary, review\_summary\_path)}
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(review\_summary), }\AttributeTok{caption =} \StringTok{"Review Summary"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6667}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1728}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1605}}@{}}
+\caption{Review Summary}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+App
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Avg\_Sentiment
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Review\_Count
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+App
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Avg\_Sentiment
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Review\_Count
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+10 Best Foods for You & 0.4566108 & 200 \\
+104 找工作 - 找工作 找打工 找兼職 履歷健檢 履歷診療室 & 0.3924046 &
+40 \\
+11st & 0.1859428 & 39 \\
+1800 Contacts - Lens Store & 0.3181448 & 80 \\
+1LINE -- One Line with One Touch & 0.1864758 & 40 \\
+2018Emoji Keyboard 😂 Emoticons Lite -sticker\&gif & 0.3596528 & 40 \\
+\end{longtable}
+
+\subsubsection{Merge Data}\label{merge-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{final\_data }\OtherTok{\textless{}{-}}\NormalTok{ apps\_clean }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(review\_summary, }\AttributeTok{by =} \StringTok{"App"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}
+        \AttributeTok{Avg\_Sentiment =} \FunctionTok{ifelse}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(Avg\_Sentiment), }\DecValTok{0}\NormalTok{, Avg\_Sentiment),}
+        \AttributeTok{Review\_Count =} \FunctionTok{ifelse}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(Review\_Count), }\DecValTok{0}\NormalTok{, Review\_Count),}
+        \AttributeTok{Success =} \FunctionTok{ifelse}\NormalTok{(Installs }\SpecialCharTok{\textgreater{}=} \DecValTok{1000000}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+        \AttributeTok{Success =} \FunctionTok{as.factor}\NormalTok{(Success)}
+\NormalTok{    )}
+
+\FunctionTok{write\_csv}\NormalTok{(final\_data, final\_data\_path)}
+
+\NormalTok{final\_data\_filtered }\OtherTok{\textless{}{-}}\NormalTok{ final\_data }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Success))}
+\FunctionTok{write\_csv}\NormalTok{(final\_data\_filtered, final\_filtered\_path)}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(final\_data), }\AttributeTok{caption =} \StringTok{"Merged Final Data"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.2208}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0649}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0303}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0346}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0216}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0390}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0216}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0260}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0649}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.1126}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0736}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0823}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0563}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0606}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0563}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 30\tabcolsep) * \real{0.0346}}@{}}
+\caption{Merged Final Data}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+App
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Category
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Rating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Reviews
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Size
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Installs
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Price
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Content Rating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Genres
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Last Updated
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Current Ver
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Android Ver
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Avg\_Sentiment
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Review\_Count
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Success
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+App
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Category
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Rating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Reviews
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Size
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Installs
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Price
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Content Rating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Genres
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Last Updated
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Current Ver
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Android Ver
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Avg\_Sentiment
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Review\_Count
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Success
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Photo Editor \& Candy Camera \& Grid \& ScrapBook & ART\_AND\_DESIGN &
+4.1 & 159 & 19.0 & 1e+04 & Free & 0 & Everyone & Art \& Design & January
+7, 2018 & 1.0.0 & 4.0.3 and up & 0.0000000 & 0 & 0 \\
+Coloring book moana & ART\_AND\_DESIGN & 3.9 & 967 & 14.0 & 5e+05 & Free
+& 0 & Everyone & Art \& Design;Pretend Play & January 15, 2018 & 2.0.0 &
+4.0.3 and up & 0.1158046 & 58 & 0 \\
+U Launcher Lite -- FREE Live Cool Themes, Hide Apps & ART\_AND\_DESIGN &
+4.7 & 87510 & 8.7 & 5e+06 & Free & 0 & Everyone & Art \& Design & August
+1, 2018 & 1.2.4 & 4.0.3 and up & 0.0000000 & 0 & 1 \\
+Sketch - Draw \& Paint & ART\_AND\_DESIGN & 4.5 & 215644 & 25.0 & 5e+07
+& Free & 0 & Teen & Art \& Design & June 8, 2018 & Varies with device &
+4.2 and up & 0.0000000 & 0 & 1 \\
+Pixel Draw - Number Art Coloring Book & ART\_AND\_DESIGN & 4.3 & 967 &
+2.8 & 1e+05 & Free & 0 & Everyone & Art \& Design;Creativity & June 20,
+2018 & 1.1 & 4.4 and up & 0.0000000 & 0 & 0 \\
+Paper flowers instructions & ART\_AND\_DESIGN & 4.4 & 167 & 5.6 & 5e+04
+& Free & 0 & Everyone & Art \& Design & March 26, 2017 & 1.0 & 2.3 and
+up & 0.0000000 & 0 & 0 \\
+\end{longtable}
+
+\subsubsection{Build Processed Dataset}\label{build-processed-dataset}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ final\_data}
+
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}
+        \AttributeTok{Installs =} \FunctionTok{as.numeric}\NormalTok{(Installs),}
+        \AttributeTok{Reviews =} \FunctionTok{as.numeric}\NormalTok{(Reviews),}
+        \AttributeTok{Rating =} \FunctionTok{as.numeric}\NormalTok{(Rating),}
+        \AttributeTok{Price =} \FunctionTok{as.numeric}\NormalTok{(Price),}
+        \AttributeTok{Size =} \FunctionTok{as.numeric}\NormalTok{(Size),}
+        \AttributeTok{log\_installs =} \FunctionTok{log1p}\NormalTok{(Installs),}
+        \AttributeTok{log\_reviews =} \FunctionTok{log1p}\NormalTok{(Reviews),}
+        \AttributeTok{is\_free =} \FunctionTok{ifelse}\NormalTok{(Type }\SpecialCharTok{==} \StringTok{"Free"}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+        \AttributeTok{high\_success =} \FunctionTok{ifelse}\NormalTok{(Installs }\SpecialCharTok{\textgreater{}=} \DecValTok{1000000}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+        \AttributeTok{Last\_Updated =} \FunctionTok{as.Date}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Last Updated}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{format =} \StringTok{"\%B \%d, \%Y"}\NormalTok{),}
+        \AttributeTok{days\_since\_update =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{Sys.Date}\NormalTok{() }\SpecialCharTok{{-}}\NormalTok{ Last\_Updated)}
+\NormalTok{    )}
+
+\ControlFlowTok{if}\NormalTok{ (}\StringTok{"Genres"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(df)) df}\SpecialCharTok{$}\NormalTok{Genres }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\FunctionTok{names}\NormalTok{(df)[}\FunctionTok{names}\NormalTok{(df) }\SpecialCharTok{==} \StringTok{"Content Rating"}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"Content.Rating"}
+
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}
+        \AttributeTok{Category =} \FunctionTok{as.factor}\NormalTok{(Category),}
+        \AttributeTok{Type =} \FunctionTok{as.factor}\NormalTok{(Type),}
+        \AttributeTok{Content.Rating =} \FunctionTok{as.factor}\NormalTok{(Content.Rating)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{na.omit}\NormalTok{()}
+
+\FunctionTok{write.csv}\NormalTok{(df, processed\_path, }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Rows in final dataset:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(df), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows in final dataset: 7026
+\end{verbatim}
+
+\subsubsection{Plot Helper}\label{plot-helper}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{save\_plot }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(plot\_obj, filename, }\AttributeTok{width =} \DecValTok{10}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{) \{}
+    \FunctionTok{ggsave}\NormalTok{(}\AttributeTok{filename =} \FunctionTok{file.path}\NormalTok{(plot\_dir, filename), }\AttributeTok{plot =}\NormalTok{ plot\_obj, }\AttributeTok{width =}\NormalTok{ width, }\AttributeTok{height =}\NormalTok{ height)}
+\NormalTok{\}}
+
+\NormalTok{base\_plot }\OtherTok{\textless{}{-}} \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme}\NormalTok{(}\AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{), }\AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Q1}\label{q1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q1\_summary }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{group\_by}\NormalTok{(Category) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{summarise}\NormalTok{(}\AttributeTok{mean\_log\_installs =} \FunctionTok{mean}\NormalTok{(log\_installs), }\AttributeTok{.groups =} \StringTok{"drop"}\NormalTok{)}
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(q1\_summary)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Category & mean\_log\_installs \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ART\_AND\_DESIGN & 11.250939 \\
+AUTO\_AND\_VEHICLES & 10.752819 \\
+BEAUTY & 10.709911 \\
+BOOKS\_AND\_REFERENCE & 10.592820 \\
+BUSINESS & 9.377300 \\
+COMICS & 11.047031 \\
+COMMUNICATION & 11.458429 \\
+DATING & 10.590895 \\
+EDUCATION & 13.121476 \\
+ENTERTAINMENT & 14.369129 \\
+EVENTS & 9.477645 \\
+FAMILY & 10.998145 \\
+FINANCE & 10.409929 \\
+FOOD\_AND\_DRINK & 12.238810 \\
+GAME & 13.298263 \\
+HEALTH\_AND\_FITNESS & 11.387623 \\
+HOUSE\_AND\_HOME & 12.456325 \\
+LIBRARIES\_AND\_DEMO & 10.691142 \\
+LIFESTYLE & 10.307042 \\
+MAPS\_AND\_NAVIGATION & 11.034152 \\
+MEDICAL & 8.586072 \\
+NEWS\_AND\_MAGAZINES & 10.761184 \\
+PARENTING & 11.263634 \\
+PERSONALIZATION & 10.756291 \\
+PHOTOGRAPHY & 12.735378 \\
+PRODUCTIVITY & 11.197444 \\
+SHOPPING & 12.586072 \\
+SOCIAL & 11.344158 \\
+SPORTS & 11.749552 \\
+TOOLS & 11.035482 \\
+TRAVEL\_AND\_LOCAL & 11.359196 \\
+VIDEO\_PLAYERS & 12.324562 \\
+WEATHER & 12.746522 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{reorder}\NormalTok{(Category, log\_installs, }\AttributeTok{FUN =}\NormalTok{ median), }\AttributeTok{y =}\NormalTok{ log\_installs)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{fill =} \StringTok{"\#4C78A8"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q1"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ base\_plot}
+\FunctionTok{print}\NormalTok{(p1)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{appstore_files/appstore_files/figure-latex/unnamed-chunk-8-1.pdf}}
+
+\subsubsection{Q2}\label{q2}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q2\_top\_categories }\OtherTok{\textless{}{-}}\NormalTok{ q1\_summary }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(mean\_log\_installs)) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{slice\_head}\NormalTok{(}\AttributeTok{n =} \DecValTok{10}\NormalTok{)}
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(q2\_top\_categories)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Category & mean\_log\_installs \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ENTERTAINMENT & 14.36913 \\
+GAME & 13.29826 \\
+EDUCATION & 13.12148 \\
+WEATHER & 12.74652 \\
+PHOTOGRAPHY & 12.73538 \\
+SHOPPING & 12.58607 \\
+HOUSE\_AND\_HOME & 12.45632 \\
+VIDEO\_PLAYERS & 12.32456 \\
+FOOD\_AND\_DRINK & 12.23881 \\
+SPORTS & 11.74955 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(q2\_top\_categories, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{reorder}\NormalTok{(Category, mean\_log\_installs), }\AttributeTok{y =}\NormalTok{ mean\_log\_installs)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{fill =} \StringTok{"\#F58518"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q2"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ base\_plot}
+\FunctionTok{print}\NormalTok{(p2)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{appstore_files/appstore_files/figure-latex/unnamed-chunk-9-1.pdf}}
+
+\subsubsection{Q3}\label{q3}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q3\_anova }\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(log\_installs }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Category, }\AttributeTok{data =}\NormalTok{ df)}
+\FunctionTok{summary}\NormalTok{(q3\_anova)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               Df Sum Sq Mean Sq F value Pr(>F)    
+## Category      32   9164  286.38   24.73 <2e-16 ***
+## Residuals   6993  80978   11.58                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p3 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Category, }\AttributeTok{y =}\NormalTok{ log\_installs)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_violin}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q3"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ base\_plot}
+\FunctionTok{print}\NormalTok{(p3)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{appstore_files/appstore_files/figure-latex/unnamed-chunk-10-1.pdf}}
+
+\subsubsection{Q4}\label{q4}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q4\_type\_means }\OtherTok{\textless{}{-}} \FunctionTok{aggregate}\NormalTok{(log\_installs }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Type, }\AttributeTok{data =}\NormalTok{ df, mean)}
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(q4\_type\_means)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Type & log\_installs \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Free & 11.578336 \\
+Paid & 8.075161 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q4\_ttest }\OtherTok{\textless{}{-}} \FunctionTok{t.test}\NormalTok{(log\_installs }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Type, }\AttributeTok{data =}\NormalTok{ df)}
+\NormalTok{q4\_ttest}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  log_installs by Type
+## t = 27.991, df = 698.52, p-value < 2.2e-16
+## alternative hypothesis: true difference in means between group Free and group Paid is not equal to 0
+## 95 percent confidence interval:
+##  3.257455 3.748894
+## sample estimates:
+## mean in group Free mean in group Paid 
+##          11.578336           8.075161
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p4 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Type, }\AttributeTok{y =}\NormalTok{ log\_installs)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q4"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ base\_plot}
+\FunctionTok{print}\NormalTok{(p4)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{appstore_files/appstore_files/figure-latex/unnamed-chunk-11-1.pdf}}
+
+\subsubsection{Q5}\label{q5}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q5\_model\_price }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(log\_installs }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Price }\SpecialCharTok{+}\NormalTok{ Rating }\SpecialCharTok{+}\NormalTok{ Category, }\AttributeTok{data =}\NormalTok{ df)}
+\FunctionTok{summary}\NormalTok{(q5\_model\_price)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log_installs ~ Price + Rating + Category, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -12.836  -2.154   0.384   2.704  10.037 
+## 
+## Coefficients:
+##                              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                  9.901598   0.546194  18.128  < 2e-16 ***
+## Price                       -0.008133   0.002242  -3.627 0.000289 ***
+## Rating                       0.309598   0.073548   4.209 2.59e-05 ***
+## CategoryAUTO_AND_VEHICLES   -0.432875   0.615411  -0.703 0.481835    
+## CategoryBEAUTY              -0.520449   0.712131  -0.731 0.464905    
+## CategoryBOOKS_AND_REFERENCE -0.645873   0.526533  -1.227 0.219995    
+## CategoryBUSINESS            -1.790652   0.497763  -3.597 0.000324 ***
+## CategoryCOMICS              -0.144999   0.664075  -0.218 0.827164    
+## CategoryCOMMUNICATION        0.296529   0.507170   0.585 0.558786    
+## CategoryDATING              -0.536932   0.539276  -0.996 0.319453    
+## CategoryEDUCATION            1.867397   0.571389   3.268 0.001088 ** 
+## CategoryENTERTAINMENT        3.181627   0.613070   5.190 2.17e-07 ***
+## CategoryEVENTS              -1.810628   0.706384  -2.563 0.010391 *  
+## CategoryFAMILY              -0.185480   0.450843  -0.411 0.680787    
+## CategoryFINANCE             -0.685548   0.490839  -1.397 0.162552    
+## CategoryFOOD_AND_DRINK       1.065412   0.596612   1.786 0.074180 .  
+## CategoryGAME                 2.087953   0.457593   4.563 5.13e-06 ***
+## CategoryHEALTH_AND_FITNESS   0.189933   0.505941   0.375 0.707370    
+## CategoryHOUSE_AND_HOME       1.276705   0.652968   1.955 0.050595 .  
+## CategoryLIBRARIES_AND_DEMO  -0.512317   0.622710  -0.823 0.410694    
+## CategoryLIFESTYLE           -0.801741   0.488833  -1.640 0.101027    
+## CategoryMAPS_AND_NAVIGATION -0.107180   0.564617  -0.190 0.849450    
+## CategoryMEDICAL             -2.586314   0.488908  -5.290 1.26e-07 ***
+## CategoryNEWS_AND_MAGAZINES  -0.423026   0.520175  -0.813 0.416108    
+## CategoryPARENTING            0.016909   0.676405   0.025 0.980057    
+## CategoryPERSONALIZATION     -0.480990   0.487067  -0.988 0.323420    
+## CategoryPHOTOGRAPHY          1.562672   0.502297   3.111 0.001872 ** 
+## CategoryPRODUCTIVITY         0.018289   0.497432   0.037 0.970671    
+## CategorySHOPPING             1.380437   0.523972   2.635 0.008443 ** 
+## CategorySOCIAL               0.124489   0.519060   0.240 0.810465    
+## CategorySPORTS               0.550313   0.497758   1.106 0.268945    
+## CategoryTOOLS               -0.103954   0.463195  -0.224 0.822431    
+## CategoryTRAVEL_AND_LOCAL     0.217220   0.527153   0.412 0.680306    
+## CategoryVIDEO_PLAYERS        1.178008   0.546836   2.154 0.031256 *  
+## CategoryWEATHER              1.535421   0.652802   2.352 0.018698 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.396 on 6991 degrees of freedom
+## Multiple R-squared:  0.1057, Adjusted R-squared:  0.1013 
+## F-statistic:  24.3 on 34 and 6991 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p5 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Price, }\AttributeTok{y =}\NormalTok{ log\_installs)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q5"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ base\_plot}
+\FunctionTok{print}\NormalTok{(p5)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula = 'y ~ x'
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{appstore_files/appstore_files/figure-latex/unnamed-chunk-12-1.pdf}}
+
+\subsubsection{Q6}\label{q6}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q6\_cor }\OtherTok{\textless{}{-}} \FunctionTok{cor.test}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{Rating, df}\SpecialCharTok{$}\NormalTok{log\_installs)}
+\NormalTok{q6\_cor}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  df$Rating and df$log_installs
+## t = 5.0153, df = 7024, p-value = 5.426e-07
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.03640192 0.08300193
+## sample estimates:
+##        cor 
+## 0.05973447
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p6 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Rating, }\AttributeTok{y =}\NormalTok{ log\_installs)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q6"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ base\_plot}
+\FunctionTok{print}\NormalTok{(p6)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula = 'y ~ x'
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{appstore_files/appstore_files/figure-latex/unnamed-chunk-13-1.pdf}}
+
+\subsubsection{Q7}\label{q7}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q7\_model\_reviews }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(log\_installs }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Reviews }\SpecialCharTok{+}\NormalTok{ Rating }\SpecialCharTok{+}\NormalTok{ Category, }\AttributeTok{data =}\NormalTok{ df)}
+\FunctionTok{summary}\NormalTok{(q7\_model\_reviews)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log_installs ~ Reviews + Rating + Category, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -27.8339  -2.0960   0.4601   2.7190   9.3948 
+## 
+## Coefficients:
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                  1.024e+01  5.336e-01  19.187  < 2e-16 ***
+## Reviews                      7.427e-07  3.936e-08  18.871  < 2e-16 ***
+## Rating                       2.291e-01  7.194e-02   3.184 0.001457 ** 
+## CategoryAUTO_AND_VEHICLES   -4.472e-01  6.009e-01  -0.744 0.456708    
+## CategoryBEAUTY              -5.152e-01  6.953e-01  -0.741 0.458711    
+## CategoryBOOKS_AND_REFERENCE -6.528e-01  5.141e-01  -1.270 0.204172    
+## CategoryBUSINESS            -1.814e+00  4.860e-01  -3.732 0.000191 ***
+## CategoryCOMICS              -1.557e-01  6.484e-01  -0.240 0.810217    
+## CategoryCOMMUNICATION        1.050e-01  4.953e-01   0.212 0.832114    
+## CategoryDATING              -5.688e-01  5.265e-01  -1.080 0.280094    
+## CategoryEDUCATION            1.846e+00  5.579e-01   3.309 0.000941 ***
+## CategoryENTERTAINMENT        3.062e+00  5.986e-01   5.115 3.22e-07 ***
+## CategoryEVENTS              -1.789e+00  6.897e-01  -2.594 0.009506 ** 
+## CategoryFAMILY              -2.532e-01  4.402e-01  -0.575 0.565222    
+## CategoryFINANCE             -7.941e-01  4.788e-01  -1.658 0.097265 .  
+## CategoryFOOD_AND_DRINK       1.025e+00  5.825e-01   1.759 0.078572 .  
+## CategoryGAME                 1.622e+00  4.475e-01   3.626 0.000290 ***
+## CategoryHEALTH_AND_FITNESS   1.624e-01  4.940e-01   0.329 0.742349    
+## CategoryHOUSE_AND_HOME       1.258e+00  6.375e-01   1.973 0.048563 *  
+## CategoryLIBRARIES_AND_DEMO  -5.211e-01  6.080e-01  -0.857 0.391453    
+## CategoryLIFESTYLE           -8.893e-01  4.770e-01  -1.864 0.062341 .  
+## CategoryMAPS_AND_NAVIGATION -1.509e-01  5.513e-01  -0.274 0.784354    
+## CategoryMEDICAL             -2.609e+00  4.773e-01  -5.465 4.79e-08 ***
+## CategoryNEWS_AND_MAGAZINES  -4.550e-01  5.079e-01  -0.896 0.370401    
+## CategoryPARENTING            1.457e-02  6.604e-01   0.022 0.982396    
+## CategoryPERSONALIZATION     -5.483e-01  4.756e-01  -1.153 0.248963    
+## CategoryPHOTOGRAPHY          1.415e+00  4.905e-01   2.884 0.003934 ** 
+## CategoryPRODUCTIVITY        -6.490e-02  4.857e-01  -0.134 0.893705    
+## CategorySHOPPING             1.295e+00  5.116e-01   2.530 0.011419 *  
+## CategorySOCIAL               3.279e-02  5.068e-01   0.065 0.948415    
+## CategorySPORTS               4.645e-01  4.860e-01   0.956 0.339231    
+## CategoryTOOLS               -2.194e-01  4.523e-01  -0.485 0.627656    
+## CategoryTRAVEL_AND_LOCAL     1.785e-01  5.147e-01   0.347 0.728689    
+## CategoryVIDEO_PLAYERS        1.012e+00  5.340e-01   1.895 0.058178 .  
+## CategoryWEATHER              1.481e+00  6.374e-01   2.324 0.020139 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.316 on 6991 degrees of freedom
+## Multiple R-squared:  0.1474, Adjusted R-squared:  0.1433 
+## F-statistic: 35.56 on 34 and 6991 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p7 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ log\_reviews, }\AttributeTok{y =}\NormalTok{ log\_installs)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q7"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ base\_plot}
+\FunctionTok{print}\NormalTok{(p7)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula = 'y ~ x'
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{appstore_files/appstore_files/figure-latex/unnamed-chunk-14-1.pdf}}
+
+\subsubsection{Q8}\label{q8}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q8\_logit }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(high\_success }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Rating, }\AttributeTok{data =}\NormalTok{ df, }\AttributeTok{family =} \StringTok{"binomial"}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(q8\_logit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = high_success ~ Rating, family = "binomial", data = df)
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -2.66784    0.21193 -12.588   <2e-16 ***
+## Rating       0.49361    0.04995   9.881   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 9132.0  on 7025  degrees of freedom
+## Residual deviance: 9025.3  on 7024  degrees of freedom
+## AIC: 9029.3
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{rating\_bin }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{Rating, }\AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\FloatTok{4.5}\NormalTok{,}\DecValTok{5}\NormalTok{), }\AttributeTok{include.lowest =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{q8\_bin\_success }\OtherTok{\textless{}{-}} \FunctionTok{aggregate}\NormalTok{(high\_success }\SpecialCharTok{\textasciitilde{}}\NormalTok{ rating\_bin, }\AttributeTok{data =}\NormalTok{ df, mean)}
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(q8\_bin\_success)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+rating\_bin & high\_success \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{[}0,3{]} & 0.0380117 \\
+(3,4{]} & 0.2812840 \\
+(4,4.5{]} & 0.4679449 \\
+(4.5,5{]} & 0.2619363 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p8 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(q8\_bin\_success, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ rating\_bin, }\AttributeTok{y =}\NormalTok{ high\_success)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q8"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ base\_plot}
+\FunctionTok{print}\NormalTok{(p8)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_line()`: Each group consists of only one observation.
+## i Do you need to adjust the group aesthetic?
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{appstore_files/appstore_files/figure-latex/unnamed-chunk-15-1.pdf}}
+
+\subsubsection{Q9}\label{q9}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q9\_table }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{Type, df}\SpecialCharTok{$}\NormalTok{high\_success)}
+\NormalTok{q9\_chi }\OtherTok{\textless{}{-}} \FunctionTok{chisq.test}\NormalTok{(q9\_table)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in chisq.test(q9_table): Chi-squared approximation may be incorrect
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q9\_chi}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's Chi-squared test
+## 
+## data:  q9_table
+## X-squared = NaN, df = 2, p-value = NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q9\_df }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(q9\_table)}
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(q9\_df)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}llr@{}}
+\toprule\noalign{}
+Var1 & Var2 & Freq \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & 0 & 0 \\
+Free & 0 & 4017 \\
+Paid & 0 & 522 \\
+0 & 1 & 0 \\
+Free & 1 & 2468 \\
+Paid & 1 & 19 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p9 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(q9\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Var1, }\AttributeTok{y =}\NormalTok{ Freq, }\AttributeTok{fill =}\NormalTok{ Var2)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{position=}\StringTok{"dodge"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q9"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ base\_plot}
+\FunctionTok{print}\NormalTok{(p9)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{appstore_files/appstore_files/figure-latex/unnamed-chunk-16-1.pdf}}
+
+\subsubsection{Q10}\label{q10}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{paid\_df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(Type }\SpecialCharTok{==} \StringTok{"Paid"}\NormalTok{, Price }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{)}
+\NormalTok{paid\_df}\SpecialCharTok{$}\NormalTok{price\_bin }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(paid\_df}\SpecialCharTok{$}\NormalTok{Price, }\AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{50}\NormalTok{), }\AttributeTok{include.lowest =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{q10\_price\_range }\OtherTok{\textless{}{-}} \FunctionTok{aggregate}\NormalTok{(log\_installs }\SpecialCharTok{\textasciitilde{}}\NormalTok{ price\_bin, }\AttributeTok{data =}\NormalTok{ paid\_df, mean)}
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(q10\_price\_range)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+price\_bin & log\_installs \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{[}0,1{]} & 7.542704 \\
+(1,5{]} & 8.252210 \\
+(5,10{]} & 8.364617 \\
+(10,50{]} & 7.516255 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p10 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(q10\_price\_range, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ price\_bin, }\AttributeTok{y =}\NormalTok{ log\_installs)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_col}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q10"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ base\_plot}
+\FunctionTok{print}\NormalTok{(p10)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{appstore_files/appstore_files/figure-latex/unnamed-chunk-17-1.pdf}}
+
+\subsubsection{Q11}\label{q11}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cor.test}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{Size, df}\SpecialCharTok{$}\NormalTok{log\_installs)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  df$Size and df$log_installs
+## t = -0.83688, df = 7024, p-value = 0.4027
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.03336062  0.01340151
+## sample estimates:
+##          cor 
+## -0.009985012
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(log\_installs }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Size, }\AttributeTok{data =}\NormalTok{ df))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log_installs ~ Size, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -10.6233  -2.1113   0.1942   2.5031   9.4288 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 11.3223312  0.0457809 247.316   <2e-16 ***
+## Size        -0.0003673  0.0004389  -0.837    0.403    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.582 on 7024 degrees of freedom
+## Multiple R-squared:  9.97e-05,   Adjusted R-squared:  -4.265e-05 
+## F-statistic: 0.7004 on 1 and 7024 DF,  p-value: 0.4027
+\end{verbatim}
+
+\subsubsection{Q12}\label{q12}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(log\_installs }\SpecialCharTok{\textasciitilde{}}\NormalTok{ days\_since\_update, }\AttributeTok{data =}\NormalTok{ df))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log_installs ~ days_since_update, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -11.098  -2.524  -0.025   2.351   8.967 
+## 
+## Coefficients:
+##                     Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        1.639e+01  3.084e-01   53.14   <2e-16 ***
+## days_since_update -1.637e-03  9.848e-05  -16.62   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.514 on 7024 degrees of freedom
+## Multiple R-squared:  0.03786,    Adjusted R-squared:  0.03772 
+## F-statistic: 276.4 on 1 and 7024 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\subsubsection{Q13}\label{q13}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q13\_category\_success }\OtherTok{\textless{}{-}} \FunctionTok{aggregate}\NormalTok{(high\_success }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Category, }\AttributeTok{data =}\NormalTok{ df, mean)}
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(q13\_category\_success)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Category & high\_success \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ART\_AND\_DESIGN & 0.1694915 \\
+AUTO\_AND\_VEHICLES & 0.2063492 \\
+BEAUTY & 0.1621622 \\
+BOOKS\_AND\_REFERENCE & 0.2198582 \\
+BUSINESS & 0.1846847 \\
+COMICS & 0.2127660 \\
+COMMUNICATION & 0.4308511 \\
+DATING & 0.2131148 \\
+EDUCATION & 0.5795455 \\
+ENTERTAINMENT & 0.7968750 \\
+EVENTS & 0.1315789 \\
+FAMILY & 0.3128307 \\
+FINANCE & 0.2325581 \\
+FOOD\_AND\_DRINK & 0.4166667 \\
+GAME & 0.5793269 \\
+HEALTH\_AND\_FITNESS & 0.3560209 \\
+HOUSE\_AND\_HOME & 0.4000000 \\
+LIBRARIES\_AND\_DEMO & 0.1833333 \\
+LIFESTYLE & 0.2527881 \\
+MAPS\_AND\_NAVIGATION & 0.3723404 \\
+MEDICAL & 0.0488722 \\
+NEWS\_AND\_MAGAZINES & 0.3181818 \\
+PARENTING & 0.2727273 \\
+PERSONALIZATION & 0.3297101 \\
+PHOTOGRAPHY & 0.5735294 \\
+PRODUCTIVITY & 0.3811659 \\
+SHOPPING & 0.5068493 \\
+SOCIAL & 0.3717949 \\
+SPORTS & 0.4027149 \\
+TOOLS & 0.3115016 \\
+TRAVEL\_AND\_LOCAL & 0.3829787 \\
+VIDEO\_PLAYERS & 0.4821429 \\
+WEATHER & 0.4800000 \\
+\end{longtable}
+}
+
+\subsubsection{Q14}\label{q14}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q14\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(log\_installs }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Category }\SpecialCharTok{+}\NormalTok{ log\_reviews }\SpecialCharTok{+}\NormalTok{ Rating }\SpecialCharTok{+}\NormalTok{ Price }\SpecialCharTok{+}\NormalTok{ Size }\SpecialCharTok{+}\NormalTok{ Avg\_Sentiment }\SpecialCharTok{+}\NormalTok{ days\_since\_update, }\AttributeTok{data =}\NormalTok{ df)}
+\NormalTok{q14\_summary }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(q14\_model)}
+\NormalTok{q14\_summary}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log_installs ~ Category + log_reviews + Rating + 
+##     Price + Size + Avg_Sentiment + days_since_update, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.7885 -0.6540  0.0278  0.6943  5.2946 
+## 
+## Coefficients:
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                  7.821e+00  2.021e-01  38.707  < 2e-16 ***
+## CategoryAUTO_AND_VEHICLES   -2.714e-01  1.917e-01  -1.416 0.156946    
+## CategoryBEAUTY               1.519e-01  2.219e-01   0.685 0.493516    
+## CategoryBOOKS_AND_REFERENCE -4.622e-01  1.642e-01  -2.814 0.004899 ** 
+## CategoryBUSINESS            -6.974e-01  1.552e-01  -4.494 7.12e-06 ***
+## CategoryCOMICS              -6.910e-01  2.070e-01  -3.338 0.000847 ***
+## CategoryCOMMUNICATION       -7.297e-01  1.584e-01  -4.608 4.15e-06 ***
+## CategoryDATING              -8.813e-01  1.681e-01  -5.244 1.62e-07 ***
+## CategoryEDUCATION           -4.039e-01  1.784e-01  -2.264 0.023618 *  
+## CategoryENTERTAINMENT       -5.759e-01  1.916e-01  -3.006 0.002657 ** 
+## CategoryEVENTS              -4.779e-01  2.201e-01  -2.171 0.029975 *  
+## CategoryFAMILY              -6.914e-01  1.408e-01  -4.912 9.22e-07 ***
+## CategoryFINANCE             -8.224e-01  1.529e-01  -5.377 7.83e-08 ***
+## CategoryFOOD_AND_DRINK      -4.197e-01  1.860e-01  -2.257 0.024054 *  
+## CategoryGAME                -9.645e-01  1.435e-01  -6.719 1.98e-11 ***
+## CategoryHEALTH_AND_FITNESS  -7.326e-01  1.577e-01  -4.646 3.45e-06 ***
+## CategoryHOUSE_AND_HOME      -1.570e-01  2.036e-01  -0.771 0.440574    
+## CategoryLIBRARIES_AND_DEMO  -9.142e-02  1.961e-01  -0.466 0.641175    
+## CategoryLIFESTYLE           -5.330e-01  1.524e-01  -3.497 0.000473 ***
+## CategoryMAPS_AND_NAVIGATION -7.374e-01  1.760e-01  -4.190 2.82e-05 ***
+## CategoryMEDICAL             -7.354e-01  1.526e-01  -4.819 1.47e-06 ***
+## CategoryNEWS_AND_MAGAZINES  -7.634e-01  1.621e-01  -4.709 2.54e-06 ***
+## CategoryPARENTING            1.382e-01  2.107e-01   0.656 0.512008    
+## CategoryPERSONALIZATION     -7.114e-01  1.522e-01  -4.674 3.01e-06 ***
+## CategoryPHOTOGRAPHY         -4.960e-01  1.569e-01  -3.162 0.001573 ** 
+## CategoryPRODUCTIVITY        -6.588e-01  1.552e-01  -4.244 2.23e-05 ***
+## CategorySHOPPING            -5.264e-01  1.635e-01  -3.219 0.001290 ** 
+## CategorySOCIAL              -9.061e-01  1.619e-01  -5.596 2.27e-08 ***
+## CategorySPORTS              -9.285e-01  1.553e-01  -5.980 2.34e-09 ***
+## CategoryTOOLS               -5.154e-01  1.446e-01  -3.564 0.000368 ***
+## CategoryTRAVEL_AND_LOCAL    -3.873e-01  1.643e-01  -2.358 0.018408 *  
+## CategoryVIDEO_PLAYERS       -3.917e-01  1.707e-01  -2.295 0.021778 *  
+## CategoryWEATHER             -6.222e-01  2.037e-01  -3.054 0.002265 ** 
+## log_reviews                  9.780e-01  3.982e-03 245.610  < 2e-16 ***
+## Rating                      -6.144e-01  2.333e-02 -26.333  < 2e-16 ***
+## Price                       -4.235e-03  6.990e-04  -6.060 1.44e-09 ***
+## Size                         8.945e-06  1.359e-04   0.066 0.947511    
+## Avg_Sentiment                8.731e-01  2.399e-01   3.640 0.000275 ***
+## days_since_update           -1.567e-04  3.193e-05  -4.906 9.53e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.058 on 6987 degrees of freedom
+## Multiple R-squared:  0.9133, Adjusted R-squared:  0.9128 
+## F-statistic:  1936 on 38 and 6987 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\subsubsection{Q15}\label{q15}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{Success }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(}\FunctionTok{ifelse}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{Installs }\SpecialCharTok{\textgreater{}=} \DecValTok{1000000}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+
+\NormalTok{train\_idx }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\FunctionTok{seq\_len}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(df)), }\AttributeTok{size =} \FunctionTok{floor}\NormalTok{(}\FloatTok{0.8} \SpecialCharTok{*} \FunctionTok{nrow}\NormalTok{(df)))}
+\NormalTok{train }\OtherTok{\textless{}{-}}\NormalTok{ df[train\_idx, ]}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ df[}\SpecialCharTok{{-}}\NormalTok{train\_idx, ]}
+
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Success }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Category }\SpecialCharTok{+}\NormalTok{ Rating }\SpecialCharTok{+}\NormalTok{ Reviews }\SpecialCharTok{+}\NormalTok{ Price }\SpecialCharTok{+}\NormalTok{ Size }\SpecialCharTok{+}\NormalTok{ Avg\_Sentiment }\SpecialCharTok{+}\NormalTok{ days\_since\_update, }\AttributeTok{data =}\NormalTok{ train, }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(model, }\AttributeTok{newdata=}\NormalTok{test, }\AttributeTok{type=}\StringTok{"response"}\NormalTok{)}
+\NormalTok{pred\_class }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(pred}\SpecialCharTok{\textgreater{}}\FloatTok{0.5}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{)}
+
+\NormalTok{conf }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(pred\_class, test}\SpecialCharTok{$}\NormalTok{Success)}
+
+\NormalTok{acc }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(pred\_class }\SpecialCharTok{==} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{as.character}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{Success)))}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Accuracy:"}\NormalTok{, acc)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Accuracy: 0.9338549
+\end{verbatim}
+
+\begin{verbatim}
+\end{verbatim}
+
+\end{document}

@@ -1,0 +1,12 @@
+
+	Welch Two Sample t-test
+
+data:  log_installs by Type
+t = 27.991, df = 698.52, p-value < 2.2e-16
+alternative hypothesis: true difference in means between group Free and group Paid is not equal to 0
+95 percent confidence interval:
+ 3.257455 3.748894
+sample estimates:
+mean in group Free mean in group Paid 
+         11.578336           8.075161 
+

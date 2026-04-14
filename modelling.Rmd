@@ -1,0 +1,721 @@
+---
+title: "Appstore-ML-modelling"
+output:
+  html_document: default
+  pdf_document: default
+date: "2026-04-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+df <- read.csv("data/cleaned/final_data.csv")
+
+# -------- 1. Ensure numeric --------
+df$Installs <- as.numeric(df$Installs)
+df$Reviews <- as.numeric(df$Reviews)
+df$Rating <- as.numeric(df$Rating)
+df$Price <- as.numeric(df$Price)
+df$Size <- as.numeric(df$Size)
+
+# -------- 2. Log transform installs, reviews --------
+df$log_installs <- log1p(df$Installs)
+df$log_reviews <- log1p(df$Reviews)
+
+# -------- 3. Factor conversion --------
+df$Category <- as.factor(df$Category)
+df$Type <- as.factor(df$Type)
+df$Content.Rating <- as.factor(df$Content.Rating)
+
+# -------- 4. Dropping Column --------
+df$Genres <- NULL
+
+# -------- 6. Binary variables --------
+df$is_free <- ifelse(df$Type == "Free", 1, 0)
+
+# -------- 7. Date processing --------
+df$Last_Updated <- as.Date(df$`Last.Updated`, format="%B %d, %Y")
+
+df$days_since_update <- as.numeric(Sys.Date() - df$Last_Updated)
+
+# -------- 8. Handle missing safely --------
+df <- na.omit(df)
+
+# -------- 9. Save processed dataset --------
+write.csv(df, "data/preprocessed/processed_appstore.csv", row.names = FALSE)
+```
+## Preprocessing
+The preprocessing step aims to clean the dataset, ensure consistency in data types, and prepare features for effective modeling and analysis.
+
+#### Steps performed
+##### 1. Data Type Conversion
+Relevant columns such as installs, reviews, rating, price, and size were converted into numeric format to ensure they can be used in statistical models. This step ensures that all quantitative features are properly interpreted by the modeling algorithms.
+
+##### 2. Log Transformation
+
+Logarithmic transformation was applied to `Install counts` and `Review counts`. This reduces skewness caused by extreme values and stabilizes variance, making relationships more linear and improving model performance.
+
+##### 3. Categorical Encoding
+Categorical variables such as `Category`, `App type`, `Content rating` were converted into factors. This allows models to correctly treat these variables as categorical rather than numeric.
+
+##### 4. Feature Removal
+
+The ``Genres`` column was removed. This was done to eliminate redundancy, as it overlaps significantly with the category feature and may introduce noise.
+
+##### 5. Feature Engineering
+
+A binary variable `is_free` was created:
+
+1 → Free apps
+0 → Paid apps
+
+This helps explicitly capture the effect of pricing strategy on app success.
+
+##### 6. Date Processing
+
+The last updated date was converted into a usable format, and a new feature `days_since_update` was created. 
+##### 7. Handling Missing Values
+
+Rows with missing values were removed using complete-case analysis. This ensures data consistency and prevents errors during modeling.
+
+
+## Linear Regression
+
+```{r}
+model <- lm(log_installs ~ Category + log_reviews + Rating + Price + Size + Avg_Sentiment + days_since_update, data = df)
+summary(model)
+```
+
+### Overall Model Performance
+
+The model explains approximately **91.3% of the variance** in app installs (R² = 0.913), indicating a very strong fit. This suggests that the selected predictors, particularly **log_reviews**, capture most of the variation in installs.
+
+The model is statistically significant overall (**p-value < 2e-16**), confirming that the predictors collectively contribute to explaining install counts.
+
+
+### Key Factors Affecting Installs
+
+**log_reviews**  
+
+* Coefficient: **0.978**
+* Interpretation: A **1% increase in reviews corresponds to approximately a 0.98% increase in installs**.
+This indicates a near-proportional relationship between reviews and installs, making **log_reviews the most influential predictor** in the model.
+
+
+**Rating**  
+
+* Coefficient: **-0.614**
+* Interpretation: Shows a negative relationship with installs when controlling for other variables.
+Highly popular apps tend to receive a wider range of ratings. Since **log_reviews already captures popularity**, rating may reflect variability in user opinion rather than growth.
+
+
+**Price**  
+
+* Coefficient: **-0.00423**
+* Interpretation: Higher prices are associated with fewer installs.
+This confirms that **free or low-cost apps tend to scale better**.
+
+
+**Avg_sentiment**  
+
+* Coefficient: **+0.873 (significant)**
+Positive user sentiment contributes to higher installs, even after accounting for review count. This highlights the importance of **user satisfaction**.
+
+
+**Days since last update**  
+
+* Coefficient: **-0.000156 (significant)**
+Apps that are updated more recently tend to perform better, emphasizing the importance of **regular updates and maintenance**.
+
+
+**Size**  
+
+* Not statistically significant (p ≈ 0.95).
+App size does not have a meaningful impact on installs when other variables are considered.
+
+
+**Categories**  
+
+* Category is included as a categorical variable, where each coefficient represents the difference relative to a baseline category.
+Most categories show **negative coefficients**, indicating lower installs relative to the baseline after controlling for other factors.
+
+
+###  Key Observations on Category
+
+* Categories such as **GAME, SOCIAL, SPORTS, and FINANCE** show strong negative effects relative to the baseline.
+* This does not imply these categories are unsuccessful overall.
+* Instead, it suggests that once **user engagement (reviews)** is accounted for, category differences become less dominant.
+
+
+### 5. Overall Insights
+
+* **User engagement (reviews) is the strongest driver of installs.**
+* **Price negatively impacts app growth**, favoring free apps.
+* **Frequent updates improve performance.**
+* **Positive sentiment contributes to higher installs.**
+* **Category plays a secondary role compared to engagement.**
+* **Rating and size have limited impact when other factors are considered.**
+
+--- 
+
+### The Second Model
+
+We added a second model **without log_reviews** to better understand the influence of other factors on app installs. Since reviews are highly correlated with installs, including them can dominate the model and mask the effects of other variables. This model helps isolate the impact of category, sentiment, pricing, and recency.
+
+
+```{r}
+model_explanatory <- lm(log_installs ~ Category + Rating + Price + Size + Avg_Sentiment + days_since_update, data = df)
+summary(model_explanatory)
+```
+
+
+###  Overall Model Performance
+
+The model explains approximately **16.4% of the variance** in app installs (R² = 0.164), which is significantly lower than the previous model.
+
+This confirms that **reviews are a major driver of installs**, and removing them reduces predictive power. However, the model is still statistically significant (p-value < 2e-16), indicating that the included variables contribute meaningfully.
+
+---
+
+### Key Factors Affecting Installs
+
+**Rating**  
+
+* Coefficient: 0.085
+Not statistically significant. Rating does not have a strong independent effect on installs.
+
+**Price**  
+
+* Coefficient: -0.0082
+Higher price leads to fewer installs, confirming that free or low-cost apps perform better.
+
+**Size**  
+
+* Coefficient: 0.00147 (significant)
+Larger apps tend to have slightly higher installs, possibly due to more features or content.
+
+**Avg_Sentiment**  
+
+* Coefficient: 9.57 (highly significant)
+This is the strongest predictor in this model. Apps with better sentiment tend to achieve higher installs.
+
+**Days Since Last Update**  
+
+* Coefficient: -0.00168 (highly significant)
+Apps updated more recently tend to perform better, highlighting the importance of regular updates.
+
+
+### Effect of Category
+
+Category effects are more visible in this model compared to the previous one. Since log_reviews is excluded, category captures more variation in installs.
+
+
+Higher-performing categories include ENTERTAINMENT, GAME, EDUCATION, PHOTOGRAPHY, WEATHER, VIDEO_PLAYERS, and SHOPPING. These categories tend to have broader appeal and higher demand.
+
+Lower-performing categories include MEDICAL, EVENTS, and BUSINESS. These are typically niche or utility-based apps with smaller audiences.
+
+### Key Insights
+
+* Removing reviews reveals the importance of sentiment, category, and update frequency
+* User sentiment becomes the strongest predictor in this model
+* Price negatively impacts installs
+* Recent updates improve performance
+* Category plays a larger role when engagement is excluded
+* Rating remains a weak predictor
+
+----
+
+To better understand the relationships between key variables and app installs, we visualize how installs vary with factors such as reviews, price, sentiment, and update recency. These plots help validate the trends observed in the regression models and provide an intuitive understanding of how different features influence app performance.
+
+```{r}
+library(ggplot2)
+
+base_plot <- theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+### Reviews vs Installs
+
+```{r}
+p1 <- ggplot(df, aes(x = log_reviews, y = log_installs)) +
+  geom_jitter(alpha = 0.3, width = 0.1, height = 0.1, color = "#2C3E50") +
+  geom_smooth(method = "lm", se = FALSE, color = "#E74C3C", linewidth = 1.2) +
+  labs(
+    title = "Reviews vs Installs",
+    subtitle = "Log-Log Scale",
+    x = "Log(Reviews)",
+    y = "Log(Installs)"
+  ) +
+  base_plot
+
+p1
+```
+
+This plot shows a strong positive linear relationship between reviews and installs. As the number of reviews increases, installs also increase proportionally. This supports the regression result that reviews are the most influential predictor of installs.
+
+
+### Price vs Installs
+
+```{r}
+p2 <- ggplot(df, aes(x = Price, y = log_installs)) +
+  geom_jitter(alpha = 0.3, width = 0.1, height = 0.1, color = "#2C3E50") +
+  geom_smooth(method = "lm", se = FALSE, color = "#E74C3C", linewidth = 1.2) +
+  labs(
+    title = "Price vs Installs",
+    x = "Price",
+    y = "Log(Installs)"
+  ) +
+  base_plot
+
+p2
+```
+
+This plot indicates a negative relationship between price and installs. Apps with higher prices tend to have fewer installs, reinforcing the idea that free or low-cost apps are more accessible and widely adopted.
+
+
+### Sentiment vs Installs
+
+```{r}
+p3 <- ggplot(df, aes(x = Avg_Sentiment, y = log_installs)) +
+  geom_jitter(alpha = 0.3, width = 0.05, height = 0.1, color = "#2C3E50") +
+  geom_smooth(method = "lm", se = FALSE, color = "#E74C3C", linewidth = 1.2) +
+  labs(
+    title = "Sentiment vs Installs",
+    x = "Average Sentiment",
+    y = "Log(Installs)"
+  ) +
+  base_plot
+
+p3
+```
+
+A positive trend is observed between sentiment and installs. Apps with better user sentiment generally achieve higher installs, highlighting the importance of user satisfaction and feedback.
+
+
+### Days Since Update vs Installs
+
+```{r}
+p4 <- ggplot(df, aes(x = days_since_update, y = log_installs)) +
+  geom_jitter(alpha = 0.3, width = 1, height = 0.1, color = "#2C3E50") +
+  geom_smooth(method = "lm", se = FALSE, color = "#E74C3C", linewidth = 1.2) +
+  labs(
+    title = "Recency vs Installs",
+    x = "Days Since Last Update",
+    y = "Log(Installs)"
+  ) +
+  base_plot
+
+p4
+```
+
+This plot shows a negative relationship between days since last update and installs. Apps that are updated more recently tend to have higher installs, emphasizing the importance of regular updates and maintenance.
+
+### Category vs Success Rate
+
+```{r} 
+id="c2ks91"
+category_success <- aggregate(Success ~ Category, data = df, mean)
+
+ggplot(category_success, aes(x = reorder(Category, Success), y = Success)) +
+  geom_bar(stat = "identity", fill = "#2ECC71", alpha = 0.8) +
+  labs(
+    title = "Success Rate by Category",
+    x = "Category",
+    y = "Proportion of Successful Apps"
+  ) +
+  coord_flip() +
+  theme_minimal()
+```
+
+This chart shows the proportion of apps in each category that achieve success (defined as installs ≥ 1 million).
+
+Categories with higher bars indicate a greater likelihood of producing successful apps.
+
+From this visualization, categories such as **ENTERTAINMENT, EDUCATION and GAME** tend to have higher success rates, suggesting stronger user demand and engagement.
+
+In contrast, categories like **MEDICAL, BEAUTY, and EVENTS** show lower success rates, indicating more niche audiences and lower scalability.
+
+Overall, this plot provides a clearer comparison of category performance by directly measuring success rather than raw installs.
+
+
+### Category vs Installs
+
+```{r}
+top_categories <- names(sort(table(df$Category), decreasing = TRUE))[1:10]
+
+ggplot(subset(df, Category %in% top_categories), 
+       aes(x = Category, y = log_installs)) +
+  geom_boxplot(fill = "#3498DB", alpha = 0.7) +
+  scale_y_continuous(
+    labels = function(x) round(exp(x))  # convert back to installs
+  ) +
+  labs(
+    title = "Installs Distribution by Category",
+    x = "Category",
+    y = "Approximate Installs"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+This boxplot shows the distribution of installs across the top app categories. Since install counts are highly skewed, a log transformation is used for visualization, while the axis is converted back to approximate install values for interpretability.
+
+Each box represents the spread of installs within a category, including the median, interquartile range, and outliers.
+
+From the plot, categories such as GAME, PRODUCTIVITY, and SPORTS show higher median installs and wider distributions, indicating strong popularity and variability. These categories tend to produce both moderately successful and highly successful apps.
+
+In contrast, categories like MEDICAL, BUSINESS, and FINANCE exhibit lower median installs and narrower spreads, suggesting more niche usage and limited scalability.
+
+The presence of outliers across categories indicates that even in lower-performing categories, a few apps achieve exceptionally high installs.
+
+Overall, the visualization highlights that while category influences app performance, there is significant variation within each category, reinforcing the importance of other factors such as user engagement and sentiment.
+
+
+## Logistic Regression
+
+To predict whether an app is successful or not, we applied logistic regression as a classification technique. The objective is to estimate the probability that an app achieves high install counts based on its features such as category, reviews, price, sentiment, and update recency.
+
+### Defining Success Variable
+
+We define a binary target variable Success, where an app is considered successful if it has at least 1 million installs.
+
+```{r}
+df$Success <- ifelse(df$Installs >= 1000000, 1, 0)
+```
+
+This converts the problem into a binary classification task:
+
+1 → Successful app (Installs ≥ 1,000,000)
+0 → Not successful
+
+### Train-Test Split
+
+To evaluate model performance, the dataset is split into training and testing sets.
+
+```{r}
+set.seed(42)
+
+train_idx <- sample(1:nrow(df), 0.8*nrow(df))
+
+train <- df[train_idx, ]
+test <- df[-train_idx, ]
+```
+80% of the data is used for training the model
+20% is reserved for testing
+A seed is set to ensure reproducibility
+
+This allows us to assess how well the model generalizes to unseen data.
+
+```{r}
+logit_model <- glm(
+  Success ~ Category + Rating + Reviews + Price + Size + Avg_Sentiment + days_since_update,
+  data = train,
+  family = "binomial"
+)
+```
+
+### Model Interpretation and Evaluation
+
+To interpret the logistic regression model and evaluate its performance, the following steps were performed.
+
+```{r}
+# Model summary and odds ratios
+summary(logit_model)
+exp(coef(logit_model))
+
+results <- data.frame(
+  Coefficient = coef(logit_model),
+  Odds_Ratio = exp(coef(logit_model))
+)
+
+results
+```
+
+* An odds ratio greater than 1 indicates an increase in success probability
+* An odds ratio less than 1 indicates a decrease in success probability
+
+### 2. Key Factors Affecting App Success 
+
+**Reviews** 
+
+Coefficient: +0.000252 (highly significant) Apps with more reviews are significantly more likely to be successful. This is the most influential predictor, highlighting the importance of user engagement. 
+
+**Price** 
+
+Coefficient: -2.73 (highly significant) Higher-priced apps are much less likely to succeed. This confirms that free or low-cost apps tend to achieve more installs.
+
+**Avg_Sentiment** 
+
+Coefficient: +2.68 (significant) Positive user sentiment strongly increases the likelihood of success. This indicates the importance of user satisfaction and feedback. 
+
+**Days Since Last Update** 
+
+Coefficient: -0.000578 (significant) Recently updated apps perform better. Regular updates improve app success probability.
+
+**Rating** 
+
+Coefficient: -0.50 (significant) Shows a negative relationship when controlling for other variables. This may be due to overlap with reviews capturing popularity. 
+
+**Size** 
+
+Not statistically significant App size does not have a meaningful impact on success.
+
+### 3. Effect of App Category
+
+Category is included as a categorical variable, where each coefficient represents deviation from a baseline category. 
+
+* Categories such as **Education, Parenting, Photography, and Weather** show strong positive effects. * Categories like **Medical** show negative effects.
+
+* Overall, category has a **secondary influence** compared to engagement and sentiment.
+
+### Model Prediction
+
+```{r}
+pred_prob <- predict(logit_model, newdata = test, type = "response")
+pred_class <- ifelse(pred_prob > 0.5, 1, 0)
+
+mean(pred_class == test$Success)
+```
+
+The logistic regression model achieves an accuracy of **93.38%**, indicating strong predictive performance on the test dataset. The **balanced accuracy of 91.65%** shows that the model performs well for both successful and unsuccessful classes.
+
+The model outputs probabilities, which are converted into class labels using a threshold of 0.5.
+
+
+### Confusion Matrix and Metrics
+
+```{r}
+library(caret)
+confusionMatrix(as.factor(pred_class), as.factor(test$Success))
+```
+
+The confusion matrix provides a detailed breakdown of model performance, including:
+
+* True Positives
+* True Negatives
+* False Positives
+* False Negatives
+
+It also computes important evaluation metrics such as **accuracy, sensitivity, specificity, and balanced accuracy**, which give a more complete picture than accuracy alone.
+
+
+### ROC Curve and AUC
+
+```{r}
+library(pROC)
+roc_obj <- roc(test$Success, pred_prob)
+plot(roc_obj)
+auc(roc_obj)
+```
+
+The ROC curve visualizes the trade-off between the true positive rate and false positive rate across different classification thresholds.
+
+The **Area Under the Curve (AUC)** measures the model’s ability to distinguish between successful and unsuccessful apps:
+
+* AUC close to 1 indicates excellent performance
+* AUC around 0.5 indicates no predictive power
+
+A high AUC value in this case confirms that the model is effective at distinguishing between the two classes.
+
+## Random Forest 
+
+To further analyze the factors influencing app installs, we applied a **Random Forest model**. Unlike linear regression, Random Forest is a non-linear, ensemble-based method that can capture complex relationships between variables and provide insights into feature importance.
+
+The objective of using Random Forest is:
+
+* To handle non-linear interactions between features
+* To obtain a more robust prediction model
+* To identify the most important features influencing installs
+
+```{r} 
+library(randomForest)
+
+set.seed(42)
+
+rf_model <- randomForest(
+  log_installs ~ Category + Rating + Reviews + Price + Size + 
+    Avg_Sentiment + days_since_update,
+  data = df,
+  importance = TRUE
+)
+```
+
+
+### Feature Importance
+
+```{r}
+importance(rf_model)
+varImpPlot(rf_model)
+```
+
+The Random Forest model provides a measure of **feature importance**, indicating how much each variable contributes to predicting installs.
+
+### Predicted vs Actual Plot
+
+```{r}
+pred_rf <- predict(rf_model, df)
+
+plot(df$log_installs, pred_rf,
+     xlab = "Actual Log Installs",
+     ylab = "Predicted Log Installs",
+     main = "Actual vs Predicted (Random Forest)")
+abline(0,1)
+```
+
+This plot compares actual values with model predictions.
+
+Points close to the diagonal line indicate accurate predictions
+The closer the points are to the line, the better the model performance
+
+### Key Observations
+
+* **Reviews** emerge as the most important feature, confirming earlier findings from regression models that user engagement strongly drives installs.
+* **Avg_Sentiment** also shows high importance, highlighting the role of user satisfaction.
+* **Days Since Last Update** is another important factor, indicating that regularly updated apps perform better.
+* **Price** has a negative influence but relatively lower importance compared to engagement-related features.
+* **Rating and Size** contribute less to prediction, aligning with previous models where their effects were limited.
+
+## K-Means Clustering
+
+To further explore patterns in app performance, we applied **K-Means clustering**, an unsupervised learning technique. Unlike regression models, clustering does not rely on a target variable but instead groups apps based on similarity in their features.
+
+The objective is to:
+
+* Identify natural groupings of apps
+* Understand different types of app performance
+* Discover patterns not captured by supervised models
+
+```{r} 
+features <- df[, c("log_installs", "Rating", "Reviews", "Price", "Size")]
+
+features <- na.omit(features)
+
+features_scaled <- scale(features)
+
+set.seed(123)
+
+kmeans_model <- kmeans(features_scaled, centers = 3)
+```
+
+### Assigning Clusters
+
+```{r} 
+df$cluster <- NA
+df[rownames(features), "cluster"] <- kmeans_model$cluster
+```
+
+Each app is assigned to one of three clusters based on similarity in features.
+
+### Cluster Summary
+
+```{r} 
+cluster_summary <- aggregate(features, 
+                             by = list(cluster = kmeans_model$cluster), 
+                             mean)
+
+cluster_summary
+```
+
+This provides the average feature values for each cluster, helping interpret their characteristics.
+
+### Cluster Visualization
+
+To better understand how features differ across clusters, we visualize the cluster centers instead of individual distributions. This provides a clearer view of how each cluster is defined.
+
+```{r}
+centers <- as.data.frame(kmeans_model$centers)
+centers$cluster <- factor(1:3)
+
+library(reshape2)
+centers_long <- melt(centers, id.vars = "cluster")
+
+ggplot(centers_long, aes(x = variable, y = value, color = cluster, group = cluster)) +
+  geom_point(size = 3) +
+  geom_line() +
+  labs(
+    title = "Cluster Feature Profiles",
+    x = "Features",
+    y = "Scaled Value"
+  ) +
+  theme_minimal()
+
+```
+
+Cluster 3 represents high-performing apps with higher installs and reviews, indicating strong user engagement. Cluster 1 consists of well-rated apps with lower installs, suggesting that high ratings alone do not guarantee popularity. Cluster 2 represents low-performing apps with lower installs, lower ratings, and relatively higher prices.
+
+
+### Feature Relationships Across Clusters
+
+```{r}
+library(GGally)
+ggpairs(features, aes(color = factor(kmeans_model$cluster)))
+```
+
+This pairwise plot helps visualize relationships between variables across clusters.
+
+### Cluster Feature Comparison
+
+```{r} 
+centers <- as.data.frame(kmeans_model$centers)
+centers$cluster <- factor(1:3)
+
+library(reshape2)
+centers_long <- melt(centers, id.vars = "cluster")
+
+ggplot(centers_long, aes(x = variable, y = value, fill = cluster)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Cluster Feature Comparison") +
+  theme_minimal()
+```
+
+This visualization compares feature values across clusters.
+
+### Key Insights from Clustering
+
+* One cluster represents **high-performing apps** with high installs and reviews
+* Another cluster represents **low-performing apps** with low engagement
+* The third cluster captures **moderate or growing apps**
+
+This segmentation helps understand different levels of app success.
+
+## Outlier Detection
+
+To identify unusual apps that deviate significantly from expected behavior, we performed outlier detection using regression residuals.
+
+```{r} 
+model <- lm(log_installs ~ log_reviews + Rating + Price + Size + 
+              Avg_Sentiment + days_since_update, data = df)
+
+df$residuals <- resid(model)
+
+df$outlier <- abs(df$residuals) > 3
+
+outliers <- df[df$outlier == TRUE, ]
+
+outliers[, c("Category", "Rating", "Reviews", "Price", "Size", "residuals")]
+```
+
+### Outlier Visualization
+
+```{r}
+ggplot(df, aes(x = log_reviews, y = log_installs)) +
+  geom_point(alpha = 0.3) +
+  geom_point(data = outliers, color = "red", size = 2) +
+  labs(title = "Outlier Detection (Highlighted)")
+```
+
+Outliers are highlighted in red, representing apps whose performance deviates significantly from model expectations.
+
+### Insights from Outliers
+
+* Some apps achieve unusually high installs despite lower reviews
+* Others underperform relative to their engagement
+* These cases may indicate **viral success, niche appeal, or external factors**
+
+
+

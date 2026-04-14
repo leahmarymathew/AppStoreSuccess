@@ -1,0 +1,19 @@
+
+Call:
+lm(formula = log_installs ~ Size, data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.6233  -2.1113   0.1942   2.5031   9.4288 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 11.3223312  0.0457809 247.316   <2e-16 ***
+Size        -0.0003673  0.0004389  -0.837    0.403    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.582 on 7024 degrees of freedom
+Multiple R-squared:  9.97e-05,	Adjusted R-squared:  -4.265e-05 
+F-statistic: 0.7004 on 1 and 7024 DF,  p-value: 0.4027
+

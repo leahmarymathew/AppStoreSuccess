@@ -1,0 +1,58 @@
+
+Call:
+glm(formula = Success ~ Category + Rating + Reviews + Price + 
+    Size + Avg_Sentiment + days_since_update, family = "binomial", 
+    data = train)
+
+Coefficients:
+                              Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                  2.397e-01  1.021e+00   0.235 0.814439    
+CategoryAUTO_AND_VEHICLES    8.631e-01  9.144e-01   0.944 0.345249    
+CategoryBEAUTY               5.731e-01  1.021e+00   0.561 0.574587    
+CategoryBOOKS_AND_REFERENCE -7.490e-01  9.633e-01  -0.778 0.436828    
+CategoryBUSINESS             5.859e-01  8.177e-01   0.717 0.473647    
+CategoryCOMICS               8.626e-02  1.049e+00   0.082 0.934490    
+CategoryCOMMUNICATION        5.783e-01  8.378e-01   0.690 0.490010    
+CategoryDATING              -1.194e-01  8.654e-01  -0.138 0.890234    
+CategoryEDUCATION            1.881e+00  8.373e-01   2.246 0.024685 *  
+CategoryENTERTAINMENT        1.668e+00  9.281e-01   1.797 0.072310 .  
+CategoryEVENTS               7.173e-01  1.065e+00   0.674 0.500473    
+CategoryFAMILY               5.878e-01  7.550e-01   0.779 0.436273    
+CategoryFINANCE              2.146e-01  8.081e-01   0.266 0.790532    
+CategoryFOOD_AND_DRINK       6.160e-01  8.973e-01   0.686 0.492426    
+CategoryGAME                 2.095e-01  7.768e-01   0.270 0.787370    
+CategoryHEALTH_AND_FITNESS   1.984e-01  8.203e-01   0.242 0.808885    
+CategoryHOUSE_AND_HOME       1.632e+00  8.630e-01   1.891 0.058578 .  
+CategoryLIBRARIES_AND_DEMO   1.025e+00  9.308e-01   1.101 0.270787    
+CategoryLIFESTYLE            1.237e+00  7.805e-01   1.585 0.112897    
+CategoryMAPS_AND_NAVIGATION  1.091e+00  8.634e-01   1.263 0.206436    
+CategoryMEDICAL             -1.821e+00  1.159e+00  -1.571 0.116118    
+CategoryNEWS_AND_MAGAZINES   6.854e-01  8.377e-01   0.818 0.413278    
+CategoryPARENTING            1.949e+00  8.646e-01   2.254 0.024202 *  
+CategoryPERSONALIZATION      1.080e+00  8.102e-01   1.334 0.182348    
+CategoryPHOTOGRAPHY          1.582e+00  8.072e-01   1.960 0.050020 .  
+CategoryPRODUCTIVITY         1.240e+00  7.942e-01   1.562 0.118312    
+CategorySHOPPING            -1.225e-01  8.670e-01  -0.141 0.887611    
+CategorySOCIAL               3.826e-01  8.627e-01   0.443 0.657404    
+CategorySPORTS               7.649e-02  8.455e-01   0.090 0.927913    
+CategoryTOOLS                1.060e+00  7.654e-01   1.385 0.165948    
+CategoryTRAVEL_AND_LOCAL     1.387e+00  8.166e-01   1.698 0.089435 .  
+CategoryVIDEO_PLAYERS        1.649e+00  8.272e-01   1.993 0.046213 *  
+CategoryWEATHER              1.678e+00  9.265e-01   1.811 0.070181 .  
+Rating                      -5.056e-01  1.010e-01  -5.005 5.59e-07 ***
+Reviews                      2.587e-04  9.619e-06  26.893  < 2e-16 ***
+Price                       -3.104e+00  4.864e-01  -6.381 1.76e-10 ***
+Size                         3.887e-04  7.415e-04   0.524 0.600137    
+Avg_Sentiment                2.376e+00  9.083e-01   2.616 0.008909 ** 
+days_since_update           -6.578e-04  1.751e-04  -3.757 0.000172 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 7322.0  on 5619  degrees of freedom
+Residual deviance: 2010.5  on 5581  degrees of freedom
+AIC: 2088.5
+
+Number of Fisher Scoring iterations: 14
+

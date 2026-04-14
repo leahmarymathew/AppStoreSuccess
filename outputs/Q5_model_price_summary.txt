@@ -1,0 +1,52 @@
+
+Call:
+lm(formula = log_installs ~ Price + Rating + Category, data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-12.836  -2.154   0.384   2.704  10.037 
+
+Coefficients:
+                             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                  9.901598   0.546194  18.128  < 2e-16 ***
+Price                       -0.008133   0.002242  -3.627 0.000289 ***
+Rating                       0.309598   0.073548   4.209 2.59e-05 ***
+CategoryAUTO_AND_VEHICLES   -0.432875   0.615411  -0.703 0.481835    
+CategoryBEAUTY              -0.520449   0.712131  -0.731 0.464905    
+CategoryBOOKS_AND_REFERENCE -0.645873   0.526533  -1.227 0.219995    
+CategoryBUSINESS            -1.790652   0.497763  -3.597 0.000324 ***
+CategoryCOMICS              -0.144999   0.664075  -0.218 0.827164    
+CategoryCOMMUNICATION        0.296529   0.507170   0.585 0.558786    
+CategoryDATING              -0.536932   0.539276  -0.996 0.319453    
+CategoryEDUCATION            1.867397   0.571389   3.268 0.001088 ** 
+CategoryENTERTAINMENT        3.181627   0.613070   5.190 2.17e-07 ***
+CategoryEVENTS              -1.810628   0.706384  -2.563 0.010391 *  
+CategoryFAMILY              -0.185480   0.450843  -0.411 0.680787    
+CategoryFINANCE             -0.685548   0.490839  -1.397 0.162552    
+CategoryFOOD_AND_DRINK       1.065412   0.596612   1.786 0.074180 .  
+CategoryGAME                 2.087953   0.457593   4.563 5.13e-06 ***
+CategoryHEALTH_AND_FITNESS   0.189933   0.505941   0.375 0.707370    
+CategoryHOUSE_AND_HOME       1.276705   0.652968   1.955 0.050595 .  
+CategoryLIBRARIES_AND_DEMO  -0.512317   0.622710  -0.823 0.410694    
+CategoryLIFESTYLE           -0.801741   0.488833  -1.640 0.101027    
+CategoryMAPS_AND_NAVIGATION -0.107180   0.564617  -0.190 0.849450    
+CategoryMEDICAL             -2.586314   0.488908  -5.290 1.26e-07 ***
+CategoryNEWS_AND_MAGAZINES  -0.423026   0.520175  -0.813 0.416108    
+CategoryPARENTING            0.016909   0.676405   0.025 0.980057    
+CategoryPERSONALIZATION     -0.480990   0.487067  -0.988 0.323420    
+CategoryPHOTOGRAPHY          1.562672   0.502297   3.111 0.001872 ** 
+CategoryPRODUCTIVITY         0.018289   0.497432   0.037 0.970671    
+CategorySHOPPING             1.380437   0.523972   2.635 0.008443 ** 
+CategorySOCIAL               0.124489   0.519060   0.240 0.810465    
+CategorySPORTS               0.550313   0.497758   1.106 0.268945    
+CategoryTOOLS               -0.103954   0.463195  -0.224 0.822431    
+CategoryTRAVEL_AND_LOCAL     0.217220   0.527153   0.412 0.680306    
+CategoryVIDEO_PLAYERS        1.178008   0.546836   2.154 0.031256 *  
+CategoryWEATHER              1.535421   0.652802   2.352 0.018698 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.396 on 6991 degrees of freedom
+Multiple R-squared:  0.1057,	Adjusted R-squared:  0.1013 
+F-statistic:  24.3 on 34 and 6991 DF,  p-value: < 2.2e-16
+

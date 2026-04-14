@@ -1,0 +1,339 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```r
+---
+title: "App Store Success"
+date: "2026-04-10"
+output: pdf_document
+---
+
+```{r setup, message=FALSE, warning=FALSE}
+suppressPackageStartupMessages({
+	library(dplyr)
+	library(readr)
+	library(stringr)
+	library(ggplot2)
+})
+set.seed(42)
+options(width = 120)
+```
+
+### Paths
+
+```{r}
+raw_apps_path <- "data/raw/googleplaystore.csv"
+raw_reviews_path <- "data/raw/googleplaystore_user_reviews.csv"
+
+clean_apps_path <- "data/cleaned/apps_cleaned.csv"
+review_summary_path <- "data/cleaned/review_summary.csv"
+final_data_path <- "data/cleaned/final_data.csv"
+final_filtered_path <- "data/cleaned/final_data_filtered.csv"
+processed_path <- "processed_appstore.csv"
+
+output_dir <- "outputs"
+plot_dir <- file.path(output_dir, "plots")
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+if (!dir.exists(plot_dir)) dir.create(plot_dir, recursive = TRUE)
+```
+
+### Load Raw Data
+
+```{r}
+apps <- read_csv(raw_apps_path, show_col_types = FALSE)
+reviews <- read_csv(raw_reviews_path, show_col_types = FALSE)
+head(apps)
+head(reviews)
+```
+
+### Clean Apps Data
+
+```{r}
+apps_clean <- apps %>%
+	filter(!is.na(Category), !is.na(Rating)) %>%
+	distinct(App, .keep_all = TRUE) %>%
+	mutate(
+		Reviews = as.numeric(Reviews),
+		Installs = as.numeric(str_replace_all(str_replace_all(Installs, "\\+", ""), ",", "")),
+		Price = as.numeric(str_replace(Price, "\\$", "")),
+		Size = ifelse(Size == "Varies with device", NA, Size),
+		Size = str_replace(Size, "k", ""),
+		Size = str_replace(Size, "M", ""),
+		Size = as.numeric(Size)
+	)
+
+apps_clean <- apps_clean %>%
+	mutate(
+		Category = as.factor(Category),
+		Type = as.factor(Type),
+		`Content Rating` = as.factor(`Content Rating`),
+		Genres = as.factor(Genres)
+	)
+
+write_csv(apps_clean, clean_apps_path)
+knitr::kable(head(apps_clean), caption = "Cleaned Apps Data")
+```
+
+### Clean Reviews and Summarize
+
+```{r}
+reviews_clean <- reviews %>%
+	filter(!is.na(Translated_Review)) %>%
+	select(App, Sentiment_Polarity)
+
+reviews_clean$Sentiment_Polarity[is.na(reviews_clean$Sentiment_Polarity)] <- 0
+
+review_summary <- reviews_clean %>%
+	group_by(App) %>%
+	summarise(
+		Avg_Sentiment = mean(Sentiment_Polarity, na.rm = TRUE),
+		Review_Count = n(),
+		.groups = "drop"
+	)
+
+write_csv(review_summary, review_summary_path)
+knitr::kable(head(review_summary), caption = "Review Summary")
+```
+
+### Merge Data
+
+```{r}
+final_data <- apps_clean %>%
+	left_join(review_summary, by = "App") %>%
+	mutate(
+		Avg_Sentiment = ifelse(is.na(Avg_Sentiment), 0, Avg_Sentiment),
+		Review_Count = ifelse(is.na(Review_Count), 0, Review_Count),
+		Success = ifelse(Installs >= 1000000, 1, 0),
+		Success = as.factor(Success)
+	)
+
+write_csv(final_data, final_data_path)
+
+final_data_filtered <- final_data %>% filter(!is.na(Success))
+write_csv(final_data_filtered, final_filtered_path)
+
+knitr::kable(head(final_data), caption = "Merged Final Data")
+```
+
+### Build Processed Dataset
+
+```{r}
+df <- final_data
+
+df <- df %>%
+	mutate(
+		Installs = as.numeric(Installs),
+		Reviews = as.numeric(Reviews),
+		Rating = as.numeric(Rating),
+		Price = as.numeric(Price),
+		Size = as.numeric(Size),
+		log_installs = log1p(Installs),
+		log_reviews = log1p(Reviews),
+		is_free = ifelse(Type == "Free", 1, 0),
+		high_success = ifelse(Installs >= 1000000, 1, 0),
+		Last_Updated = as.Date(`Last Updated`, format = "%B %d, %Y"),
+		days_since_update = as.numeric(Sys.Date() - Last_Updated)
+	)
+
+if ("Genres" %in% names(df)) df$Genres <- NULL
+names(df)[names(df) == "Content Rating"] <- "Content.Rating"
+
+df <- df %>%
+	mutate(
+		Category = as.factor(Category),
+		Type = as.factor(Type),
+		Content.Rating = as.factor(Content.Rating)
+	) %>%
+	na.omit()
+
+write.csv(df, processed_path, row.names = FALSE)
+
+cat("Rows in final dataset:", nrow(df), "\n")
+```
+
+### Plot Helper
+
+```{r}
+save_plot <- function(plot_obj, filename, width = 10, height = 6) {
+	ggsave(filename = file.path(plot_dir, filename), plot = plot_obj, width = width, height = height)
+}
+
+base_plot <- theme_minimal(base_size = 12) +
+	theme(plot.title = element_text(face = "bold"), panel.grid.minor = element_blank())
+```
+
+### Q1
+
+```{r}
+q1_summary <- df %>% group_by(Category) %>% summarise(mean_log_installs = mean(log_installs), .groups = "drop")
+knitr::kable(q1_summary)
+
+p1 <- ggplot(df, aes(x = reorder(Category, log_installs, FUN = median), y = log_installs)) +
+	geom_boxplot(fill = "#4C78A8") + coord_flip() + labs(title = "Q1") + base_plot
+print(p1)
+```
+
+### Q2
+
+```{r}
+q2_top_categories <- q1_summary %>% arrange(desc(mean_log_installs)) %>% slice_head(n = 10)
+knitr::kable(q2_top_categories)
+
+p2 <- ggplot(q2_top_categories, aes(x = reorder(Category, mean_log_installs), y = mean_log_installs)) +
+	geom_col(fill = "#F58518") + coord_flip() + labs(title = "Q2") + base_plot
+print(p2)
+```
+
+### Q3
+
+```{r}
+q3_anova <- aov(log_installs ~ Category, data = df)
+summary(q3_anova)
+
+p3 <- ggplot(df, aes(x = Category, y = log_installs)) +
+	geom_violin() + coord_flip() + labs(title = "Q3") + base_plot
+print(p3)
+```
+
+### Q4
+
+```{r}
+q4_type_means <- aggregate(log_installs ~ Type, data = df, mean)
+knitr::kable(q4_type_means)
+
+q4_ttest <- t.test(log_installs ~ Type, data = df)
+q4_ttest
+
+p4 <- ggplot(df, aes(x = Type, y = log_installs)) +
+	geom_boxplot() + labs(title = "Q4") + base_plot
+print(p4)
+```
+
+### Q5
+
+```{r}
+q5_model_price <- lm(log_installs ~ Price + Rating + Category, data = df)
+summary(q5_model_price)
+
+p5 <- ggplot(df, aes(x = Price, y = log_installs)) +
+	geom_point() + geom_smooth(method = "lm") + labs(title = "Q5") + base_plot
+print(p5)
+```
+
+### Q6
+
+```{r}
+q6_cor <- cor.test(df$Rating, df$log_installs)
+q6_cor
+
+p6 <- ggplot(df, aes(x = Rating, y = log_installs)) +
+	geom_point() + geom_smooth(method = "lm") + labs(title = "Q6") + base_plot
+print(p6)
+```
+
+### Q7
+
+```{r}
+q7_model_reviews <- lm(log_installs ~ Reviews + Rating + Category, data = df)
+summary(q7_model_reviews)
+
+p7 <- ggplot(df, aes(x = log_reviews, y = log_installs)) +
+	geom_point() + geom_smooth(method = "lm") + labs(title = "Q7") + base_plot
+print(p7)
+```
+
+### Q8
+
+```{r}
+q8_logit <- glm(high_success ~ Rating, data = df, family = "binomial")
+summary(q8_logit)
+
+df$rating_bin <- cut(df$Rating, breaks = c(0,3,4,4.5,5), include.lowest = TRUE)
+q8_bin_success <- aggregate(high_success ~ rating_bin, data = df, mean)
+knitr::kable(q8_bin_success)
+
+p8 <- ggplot(q8_bin_success, aes(x = rating_bin, y = high_success)) +
+	geom_line() + geom_point() + labs(title = "Q8") + base_plot
+print(p8)
+```
+
+### Q9
+
+```{r}
+q9_table <- table(df$Type, df$high_success)
+q9_chi <- chisq.test(q9_table)
+q9_chi
+
+q9_df <- as.data.frame(q9_table)
+knitr::kable(q9_df)
+
+p9 <- ggplot(q9_df, aes(x = Var1, y = Freq, fill = Var2)) +
+	geom_col(position="dodge") + labs(title = "Q9") + base_plot
+print(p9)
+```
+
+### Q10
+
+```{r}
+paid_df <- df %>% filter(Type == "Paid", Price > 0)
+paid_df$price_bin <- cut(paid_df$Price, breaks = c(0,1,5,10,50), include.lowest = TRUE)
+q10_price_range <- aggregate(log_installs ~ price_bin, data = paid_df, mean)
+knitr::kable(q10_price_range)
+
+p10 <- ggplot(q10_price_range, aes(x = price_bin, y = log_installs)) +
+	geom_col() + labs(title = "Q10") + base_plot
+print(p10)
+```
+
+### Q11
+
+```{r}
+cor.test(df$Size, df$log_installs)
+summary(lm(log_installs ~ Size, data = df))
+```
+
+### Q12
+
+```{r}
+summary(lm(log_installs ~ days_since_update, data = df))
+```
+
+### Q13
+
+```{r}
+q13_category_success <- aggregate(high_success ~ Category, data = df, mean)
+knitr::kable(q13_category_success)
+```
+
+### Q14
+
+```{r}
+q14_model <- lm(log_installs ~ Category + log_reviews + Rating + Price + Size + Avg_Sentiment + days_since_update, data = df)
+q14_summary <- summary(q14_model)
+q14_summary
+```
+
+### Q15
+
+```{r}
+df$Success <- as.factor(ifelse(df$Installs >= 1000000, 1, 0))
+
+train_idx <- sample(seq_len(nrow(df)), size = floor(0.8 * nrow(df)))
+train <- df[train_idx, ]
+test <- df[-train_idx, ]
+
+model <- glm(Success ~ Category + Rating + Reviews + Price + Size + Avg_Sentiment + days_since_update, data = train, family="binomial")
+
+pred <- predict(model, newdata=test, type="response")
+pred_class <- ifelse(pred>0.5,1,0)
+
+conf <- table(pred_class, test$Success)
+
+acc <- mean(pred_class == as.numeric(as.character(test$Success)))
+cat("Accuracy:", acc)
+```
+
+```
+```

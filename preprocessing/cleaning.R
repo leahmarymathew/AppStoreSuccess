@@ -15,7 +15,6 @@ summary(reviews)
 apps_clean <- apps %>%
   filter(!is.na(Category), !is.na(Rating))
 
-
 apps_clean <- apps_clean %>%
   distinct(App, .keep_all = TRUE)
 

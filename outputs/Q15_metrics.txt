@@ -1,0 +1,5 @@
+Q15 Accuracy: 0.931
+Q15 Precision: 0.9509
+Q15 Recall: 0.8427
+Q15 Specificity: 0.9772
+Q15 F1: 0.8935

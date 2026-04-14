@@ -1,0 +1,57 @@
+
+Call:
+lm(formula = log_installs ~ Category + log_reviews + Rating + 
+    Price + Size + Avg_Sentiment + days_since_update, data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.7885 -0.6540  0.0278  0.6943  5.2946 
+
+Coefficients:
+                              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                  7.821e+00  2.021e-01  38.707  < 2e-16 ***
+CategoryAUTO_AND_VEHICLES   -2.714e-01  1.917e-01  -1.416 0.156946    
+CategoryBEAUTY               1.519e-01  2.219e-01   0.685 0.493516    
+CategoryBOOKS_AND_REFERENCE -4.622e-01  1.642e-01  -2.814 0.004899 ** 
+CategoryBUSINESS            -6.974e-01  1.552e-01  -4.494 7.12e-06 ***
+CategoryCOMICS              -6.910e-01  2.070e-01  -3.338 0.000847 ***
+CategoryCOMMUNICATION       -7.297e-01  1.584e-01  -4.608 4.15e-06 ***
+CategoryDATING              -8.813e-01  1.681e-01  -5.244 1.62e-07 ***
+CategoryEDUCATION           -4.039e-01  1.784e-01  -2.264 0.023618 *  
+CategoryENTERTAINMENT       -5.759e-01  1.916e-01  -3.006 0.002657 ** 
+CategoryEVENTS              -4.779e-01  2.201e-01  -2.171 0.029975 *  
+CategoryFAMILY              -6.914e-01  1.408e-01  -4.912 9.22e-07 ***
+CategoryFINANCE             -8.224e-01  1.529e-01  -5.377 7.83e-08 ***
+CategoryFOOD_AND_DRINK      -4.197e-01  1.860e-01  -2.257 0.024054 *  
+CategoryGAME                -9.645e-01  1.435e-01  -6.719 1.98e-11 ***
+CategoryHEALTH_AND_FITNESS  -7.326e-01  1.577e-01  -4.646 3.45e-06 ***
+CategoryHOUSE_AND_HOME      -1.570e-01  2.036e-01  -0.771 0.440574    
+CategoryLIBRARIES_AND_DEMO  -9.142e-02  1.961e-01  -0.466 0.641175    
+CategoryLIFESTYLE           -5.330e-01  1.524e-01  -3.497 0.000473 ***
+CategoryMAPS_AND_NAVIGATION -7.374e-01  1.760e-01  -4.190 2.82e-05 ***
+CategoryMEDICAL             -7.354e-01  1.526e-01  -4.819 1.47e-06 ***
+CategoryNEWS_AND_MAGAZINES  -7.634e-01  1.621e-01  -4.709 2.54e-06 ***
+CategoryPARENTING            1.382e-01  2.107e-01   0.656 0.512008    
+CategoryPERSONALIZATION     -7.114e-01  1.522e-01  -4.674 3.01e-06 ***
+CategoryPHOTOGRAPHY         -4.960e-01  1.569e-01  -3.162 0.001573 ** 
+CategoryPRODUCTIVITY        -6.588e-01  1.552e-01  -4.244 2.23e-05 ***
+CategorySHOPPING            -5.264e-01  1.635e-01  -3.219 0.001290 ** 
+CategorySOCIAL              -9.061e-01  1.619e-01  -5.596 2.27e-08 ***
+CategorySPORTS              -9.285e-01  1.553e-01  -5.980 2.34e-09 ***
+CategoryTOOLS               -5.154e-01  1.446e-01  -3.564 0.000368 ***
+CategoryTRAVEL_AND_LOCAL    -3.873e-01  1.643e-01  -2.358 0.018408 *  
+CategoryVIDEO_PLAYERS       -3.917e-01  1.707e-01  -2.295 0.021778 *  
+CategoryWEATHER             -6.222e-01  2.037e-01  -3.054 0.002265 ** 
+log_reviews                  9.780e-01  3.982e-03 245.610  < 2e-16 ***
+Rating                      -6.144e-01  2.333e-02 -26.333  < 2e-16 ***
+Price                       -4.235e-03  6.990e-04  -6.060 1.44e-09 ***
+Size                         8.945e-06  1.359e-04   0.066 0.947511    
+Avg_Sentiment                8.731e-01  2.399e-01   3.640 0.000275 ***
+days_since_update           -1.567e-04  3.193e-05  -4.906 9.53e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.058 on 6987 degrees of freedom
+Multiple R-squared:  0.9133,	Adjusted R-squared:  0.9128 
+F-statistic:  1936 on 38 and 6987 DF,  p-value: < 2.2e-16
+

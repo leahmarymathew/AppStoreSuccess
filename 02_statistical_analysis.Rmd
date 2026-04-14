@@ -1,0 +1,504 @@
+---
+title: "02_statistical_analysis"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r}
+df <- read.csv("../data/preprocessed/processed_appstore.csv")
+
+df$Category <- as.factor(df$Category)
+df$Type <- as.factor(df$Type)
+```
+
+## Q1: How do install distributions vary across different application categories?
+
+### Method
+
+A boxplot is used to visualize the distribution of install counts
+(log-transformed) across different application categories. This helps
+compare medians, spread, and variability between categories.
+
+```{r}
+
+par(mar=c(12,4,4,2))
+boxplot(log_installs ~ Category, data=df, las=2,
+        main="Installs across Categories",
+        ylab="Log Installs")
+```
+
+### Result
+
+The boxplot indicates moderate variation in install distributions across
+categories. Most categories have median log install values in a similar
+range (approximately 10–14), with a few categories showing slightly
+higher medians and some slightly lower. Additionally, several categories
+exhibit wide interquartile ranges and numerous outliers, indicating
+variability in app performance within categories.
+
+### Interpretation
+
+The results suggest that while category does influence install
+performance, the differences across categories are not extremely large.
+Most categories show comparable levels of installs, indicating that
+success is not solely dependent on category. However, variability within
+each category suggests that individual app characteristics (such as
+rating, reviews, and features) also play a significant role. The
+presence of outliers further indicates that a few apps achieve
+exceptionally high installs regardless of category.
+
+## Q3: Which categories consistently achieve significantly higher install counts?
+
+### Method
+
+ANOVA (Analysis of Variance) is used to determine whether there are
+statistically significant differences in install counts across
+application categories. Additionally, mean install values for each
+category are computed for comparison.
+
+```{r}
+aggregate(log_installs ~ Category, data=df, mean)
+
+anova_model <- aov(log_installs ~ Category, data=df)
+summary(anova_model)
+```
+
+### Result
+
+The ANOVA test shows a highly significant difference in install counts
+across application categories (F = 24.73, p \< 2e-16). This indicates
+that the mean install counts are not equal across all categories.
+
+From the mean values, categories such as Entertainment (14.37), Game
+(13.30), and Education (13.12) have higher average install counts. In
+contrast, categories like Medical (8.59), Business (9.38), and Events
+(9.48) show lower mean install values.
+
+### Interpretation
+
+The results indicate that application category significantly influences
+install performance. Categories related to entertainment and gaming tend
+to attract more users due to higher engagement and broader appeal,
+resulting in higher install counts. On the other hand, categories such
+as Medical and Business cater to more specific user needs, leading to
+lower install volumes.
+
+Since the p-value is much smaller than 0.05, the null hypothesis that
+all categories have equal mean installs is rejected. This confirms that
+category is an important factor affecting app success.
+
+## Q4: How do install patterns differ between Free and Paid applications?
+
+### Method
+
+A t-test is used to compare the mean install counts between Free and
+Paid apps.
+
+```{r}
+aggregate(log_installs ~ Type, data=df, mean)
+
+t.test(log_installs ~ Type, data=df)
+```
+
+### Result
+
+The mean log install count for Free applications is 11.58, while for
+Paid applications it is 8.08, showing a large difference between the two
+groups.
+
+The Welch two-sample t-test indicates that this difference is highly
+statistically significant (t = 27.99, df ≈ 698.52, p \< 2.2e-16). The
+95% confidence interval for the difference in means is [3.26, 3.75],
+which does not include zero.
+
+### Interpretation
+
+Free applications achieve significantly higher install counts than Paid
+applications. The large gap in mean values and the extremely small
+p-value indicate that pricing model strongly influences user adoption.
+
+Since p \< 0.05, the null hypothesis (equal mean installs for Free and
+Paid apps) is rejected. This suggests that users are much more likely to
+download Free apps, making the free pricing model a key driver of
+install performance.
+
+## Q5: Does price significantly impact install volume after controlling for rating and category?
+
+### Method
+
+A multiple linear regression model is used to analyze the effect of
+price on install counts while controlling for other important variables
+such as rating and category.
+
+In this model: - The dependent variable is log-transformed install count
+(log_installs). - The independent variables include Price, Rating, and
+Category.
+
+This approach allows us to isolate the effect of price on installs while
+accounting for differences in app quality (rating) and app type
+(category).
+
+```{r}
+model_price <- lm(log_installs ~ Price + Rating + Category, data=df)
+summary(model_price)
+```
+
+### Result
+
+The multiple linear regression model shows that Price has a negative and
+statistically significant effect on install counts (coefficient =
+-0.00813, p = 0.000289). This indicates that as price increases, install
+counts decrease, even after controlling for Rating and Category.
+
+Rating has a positive and significant effect (coefficient = 0.3096, p \<
+0.001), suggesting that higher-rated apps tend to receive more installs.
+
+Several categories also show significant effects compared to the
+baseline category. For example, Entertainment (3.18, p \< 0.001), Game
+(2.09, p \< 0.001), and Education (1.87, p = 0.001) have strong positive
+impacts on installs, while categories such as Medical (-2.59, p \<
+0.001) and Business (-1.79, p \< 0.001) have negative impacts.
+
+The overall model is statistically significant (F = 24.3, p \< 2.2e-16),
+although the R-squared value (0.106) indicates that only about 10.6% of
+the variation in installs is explained by the model.
+
+### Interpretation
+
+The results indicate that price significantly affects install
+performance, even after accounting for rating and category. The negative
+coefficient for price confirms that higher-priced apps tend to attract
+fewer users, suggesting that cost acts as a barrier to downloads.
+
+At the same time, rating plays a strong positive role, indicating that
+users are more likely to install apps with better user feedback.
+Category also influences installs, with entertainment and gaming-related
+apps performing better due to higher engagement, while specialized
+categories like Medical perform worse.
+
+Although the model is statistically significant, the relatively low
+R-squared value suggests that other factors (such as marketing, app
+quality, or user experience) also contribute to install success.
+
+Overall, the findings show that price has a statistically significant
+but relatively small negative effect on installs when other variables
+are controlled.
+
+## Q6: What is the statistical strength of correlation between user ratings and install levels?
+
+### Method
+
+Pearson’s correlation test is used to measure the strength and direction
+of the linear relationship between user ratings and install counts
+(log-transformed). This test provides both the correlation coefficient
+and the statistical significance of the relationship.
+
+```{r}
+cor.test(df$Rating, df$log_installs)
+```
+
+### Result
+
+The Pearson correlation coefficient between rating and log install count
+is 0.0597, indicating a very weak positive relationship.
+
+The correlation is statistically significant (t = 5.02, p = 5.43e-07),
+and the 95% confidence interval [0.036, 0.083] does not include zero.
+
+### Interpretation
+
+The results indicate that while there is a statistically significant
+relationship between rating and install count, the strength of the
+relationship is very weak.
+
+This means that higher-rated apps tend to have slightly more installs,
+but rating alone does not strongly influence install performance. Other
+factors such as category, price, and user engagement are likely more
+important in determining app success.
+
+## Q7: Does review count independently influence install performance?
+
+### Method
+
+A multiple linear regression model is used to evaluate the impact of
+review count on install performance while controlling for other
+important variables such as rating and category.
+
+In this model: - The dependent variable is log-transformed install count
+(log_installs). - The independent variables include Reviews, Rating, and
+Category.
+
+This approach allows us to determine whether review count has an
+independent effect on installs after accounting for app quality (rating)
+and differences across categories.
+
+```{r}
+model_reviews <- lm(log_installs ~ Reviews + Rating + Category, data=df)
+summary(model_reviews)
+```
+
+### Result
+
+The regression model shows that Reviews has a positive and highly
+significant effect on install counts (coefficient = 7.43e-07, p \<
+2e-16). This indicates that apps with more reviews tend to have higher
+install counts.
+
+Rating also remains a significant predictor (coefficient = 0.229, p =
+0.0015), showing that higher-rated apps are associated with more
+installs.
+
+Several categories continue to show significant effects, such as
+Entertainment (3.06, p \< 0.001), Education (1.85, p \< 0.001), and Game
+(1.62, p \< 0.001), while categories like Medical (-2.61, p \< 0.001)
+show lower installs.
+
+The overall model is statistically significant (F = 35.56, p \<
+2.2e-16), and the R-squared value is 0.147, indicating that
+approximately 14.7% of the variation in install counts is explained by
+the model.
+
+### Interpretation
+
+The results indicate that review count has a strong and independent
+influence on install performance. Apps with more reviews tend to attract
+more users, likely because higher review counts signal popularity and
+trustworthiness.
+
+Even after controlling for rating and category, reviews remain highly
+significant, suggesting that user engagement plays a crucial role in app
+success. While the coefficient value is small due to the scale of
+reviews, its strong statistical significance highlights its importance.
+
+The higher R-squared compared to previous models suggests that including
+reviews improves the model’s explanatory power. Overall, review count is
+a key predictor of install performance, reflecting the importance of
+user feedback and social proof in driving app downloads.
+
+## Q8: Is there a rating threshold above which install probability increases significantly?
+
+### Method
+
+Two approaches are used to analyze the effect of rating on install
+success:
+
+1.  Logistic regression is applied with high_success (whether installs
+    exceed a threshold, e.g., 1M+) as the dependent variable and Rating
+    as the predictor. This helps estimate how rating affects the
+    probability of achieving high installs.
+
+2.  Rating values are grouped into bins (e.g., 0–3, 3–4, 4–4.5, 4.5–5),
+    and the average success rate within each bin is calculated. This
+    helps identify any threshold effect visually.
+
+```{r}
+logit_model <- glm(high_success ~ Rating, data=df, family="binomial")
+summary(logit_model)
+```
+
+```{r}
+df$rating_bin <- cut(df$Rating, breaks=c(0,3,4,4.5,5))
+
+aggregate(high_success ~ rating_bin, data=df, mean)
+```
+
+### Result
+
+The logistic regression model shows that Rating has a positive and
+statistically significant effect on the probability of achieving high
+install counts.
+
+The binned analysis indicates that the proportion of high-success apps
+increases as rating increases, with higher rating bins (especially above
+4.0 or 4.5) showing a greater likelihood of achieving high installs.
+
+### Interpretation
+
+The results suggest that higher-rated apps are more likely to achieve
+high install milestones. This indicates the presence of a rating
+threshold, where apps above a certain rating level (around 4.0–4.5)
+experience a noticeable increase in success probability.
+
+However, the increase is gradual rather than abrupt, indicating that
+rating contributes to success but is not the sole determining factor.
+Other variables such as reviews, category, and pricing also play
+important roles in influencing install performance.
+
+## Q9: Are Free applications statistically more likely to achieve high install milestones (e.g., 1M+) than Paid applications?
+
+### Method
+
+A chi-square test of independence is used to examine the relationship
+between app type (Free vs Paid) and install success (high_success). This
+test determines whether the likelihood of achieving high installs
+depends on the pricing model.
+
+```{r}
+table(df$Type, df$high_success)
+
+chisq.test(table(df$Type, df$high_success))
+```
+
+### Result
+
+The contingency table shows that a large number of Free apps achieve
+high installs (2468) compared to Paid apps (only 19).
+
+The chi-square test indicates a highly significant association between
+app type and install success (χ² = 259.08, df = 1, p \< 2.2e-16).
+
+### Interpretation
+
+The results clearly show that Free applications are significantly more
+likely to achieve high install milestones compared to Paid applications.
+The extremely small p-value leads to rejection of the null hypothesis,
+confirming that install success is dependent on app type.
+
+This suggests that the free pricing model strongly increases the
+probability of reaching high install counts, likely because it removes
+cost barriers and encourages wider adoption among users.
+
+## Q10: Is there an optimal price range for paid applications that maximizes install performance?
+
+### Method
+
+Prices are grouped into ranges using binning, and the average install
+counts (log-transformed) are calculated for each price range. This helps
+identify patterns in install performance across different pricing
+levels.
+
+```{r}
+df$price_bin <- cut(df$Price, breaks=c(0,1,5,10,50))
+
+aggregate(log_installs ~ price_bin, data=df, mean)
+```
+
+### Result
+
+The average log install counts for different price ranges are as
+follows:
+
+(0,1] → 7.54 (1,5] → 8.25 (5,10] → 8.36 (10,50] → 7.52
+
+The mid-range prices (1–10) show slightly higher install values compared
+to very low (0–1) and very high (10–50) price ranges.
+
+### Interpretation
+
+The results suggest that extremely low-priced and high-priced apps tend
+to have lower install counts, while moderate price ranges (1–10) perform
+slightly better.
+
+This indicates that there may be a mild optimal pricing range where
+users perceive better value, leading to higher installs. However, the
+differences across price ranges are not very large, suggesting that
+price alone is not a dominant factor in determining install performance.
+
+Overall, pricing has a moderate influence, and other factors such as
+category, ratings, and reviews likely play a more significant role in
+app success.
+
+## Q11: Does app size significantly influence installs or ratings?
+
+### Method
+
+Pearson’s correlation test and a simple linear regression model are used
+to examine the relationship between app size and install counts
+(log-transformed).
+
+-   Correlation analysis measures the strength and direction of the
+    relationship.
+-   Linear regression evaluates whether app size significantly predicts
+    install performance.
+
+```{r}
+cor.test(df$Size, df$log_installs)
+
+model_size <- lm(log_installs ~ Size, data=df)
+summary(model_size)
+```
+
+### Result
+
+The correlation between app size and log install count is -0.00998,
+indicating an extremely weak relationship. The result is not
+statistically significant (p = 0.4027), and the 95% confidence interval
+[-0.033, 0.013] includes zero.
+
+Similarly, the regression model shows that Size is not a significant
+predictor of install counts (coefficient = -0.000367, p = 0.403). The
+R-squared value is approximately 0.0001, indicating that app size
+explains almost none of the variation in installs.
+
+### Interpretation
+
+The results indicate that app size has no meaningful impact on install
+performance. The extremely low correlation and non-significant p-value
+suggest that users do not consider app size as an important factor when
+deciding to install an app.
+
+This implies that other factors such as category, price, ratings, and
+reviews play a much more important role in determining app success.
+Therefore, app size is not a useful predictor of install performance.
+
+## Q12: Do recently updated applications outperform older applications in install counts?
+
+### Method
+
+A linear regression model is used to analyze the relationship between
+app update recency and install counts.
+
+-   The variable days_since_update is calculated as the number of days
+    between the current date and the last update date.
+-   The dependent variable is log-transformed install count
+    (log_installs).
+-   This model helps determine whether more recently updated apps
+    achieve higher installs.
+
+```{r}
+df$Last_Updated <- as.Date(df$Last_Updated)
+df$days_since_update <- as.numeric(Sys.Date() - df$Last_Updated)
+
+model_update <- lm(log_installs ~ days_since_update, data=df)
+summary(model_update)
+```
+
+### Result
+
+The regression model shows that days_since_update has a negative and
+statistically significant effect on install counts (coefficient =
+-0.00164, p \< 2e-16).
+
+This indicates that as the number of days since the last update
+increases, install counts decrease.
+
+The model is statistically significant (F = 276.4, p \< 2.2e-16),
+although the R-squared value (0.038) suggests that only about 3.8% of
+the variation in installs is explained by update recency.
+
+### Interpretation
+
+The results indicate that recently updated applications tend to achieve
+higher install counts compared to older applications. The negative
+relationship suggests that apps become less attractive to users as they
+remain outdated.
+
+Frequent updates may signal active development, improved features, and
+better user experience, which encourages more downloads.
+
+However, the relatively low R-squared value indicates that while update
+recency is significant, it is not the primary factor influencing install
+performance. Other variables such as category, pricing, ratings, and
+reviews play a more substantial role.
+
+Overall, keeping apps updated is an important factor for maintaining
+user interest and improving install performance.
+
+```{r}
+
+```
